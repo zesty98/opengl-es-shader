@@ -3,9 +3,12 @@ package com.gomdev.shader;
 import java.util.ArrayList;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -77,6 +80,7 @@ public class MainActivity extends FragmentActivity {
         mTabInfos.add(tab);
     }
 
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         if (DEBUG) {
             Log.d(TAG, "onCreate()");
@@ -84,6 +88,11 @@ public class MainActivity extends FragmentActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar = getActionBar();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            actionBar.setElevation(0);
+        }
 
         ShaderContext.newInstance();
 
@@ -197,6 +206,11 @@ public class MainActivity extends FragmentActivity {
         mSlidingTabLayout.setViewPager(mViewPager);
         mSlidingTabLayout.setOnPageChangeListener(new MyPageChangeListener());
 
+        int color = getResources().getColor(R.color.selectedIndicatorColor);
+        mSlidingTabLayout.setSelectedIndicatorColors(color);
+
+        int bgColor = getResources().getColor(R.color.colorPrimary);
+        mSlidingTabLayout.setBackgroundColor(bgColor);
     }
 
     void setCurrentFragment(int index, Fragment fragment) {

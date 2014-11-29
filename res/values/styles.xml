@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ShaderTheme" parent="android:Theme.Holo.Light"></style>
+    <style name="ShaderTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
 </resources>

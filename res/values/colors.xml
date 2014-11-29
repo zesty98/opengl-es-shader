@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="selectedTextColor">#ff000000</color>
-    <color name="defaultTextColor">#ff888888</color>
-    <color name="colorAccent">#FF33B5E5</color>
+    <color name="selectedTextColor">#F000</color>
+    <color name="defaultTextColor">#F888</color>
+    <color name="selectedIndicatorColor">#FF33B5E5</color>
 </resources>
