@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="app_name">OpenGL ES 3.0 Shader</string>
+    <string name="sample_shader_list">Shader List</string>
+    <string name="sample_fps">FPS : </string>
+    <string name="options_list">List</string>
+    <string name="options_restore">Restore</string>
+    <string name="options_options">Options</string>
+    <string name="options_device_info">Device Info</string>
+    <string name="edit_save">Save</string>
+    <string name="view_edit">Edit</string>
+    <string name="sample_list_show_info">Show informations</string>
+    <string name="sample_list_device_info">Device Informations</string>
+    <string name="sample_list_hardware">Hardware</string>
+    <string name="sample_list_architecture">Architecture</string>
+    <string name="sample_list_feature">Features</string>
+    <string name="sample_list_vendor">GPU Vendor</string>
+    <string name="sample_list_renderer">GPU Renderer</string>
+    <string name="sample_list_version">OpenGL ES Version</string>
+    <string name="sample_list_extensions">Extensions</string>
+    <string name="main_options_show_informations">Show Informations</string>
+    <string name="main_options_use_opengles_3.0">Use OpenGL ES 3.0</string>
+    <string name="main_options_show_fps">Show FPS</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3690892451265954/2988627028</string>
+    <string name="test_device_id">B59FF2DA27745796D4C33147F034660B</string>
+
+</resources>

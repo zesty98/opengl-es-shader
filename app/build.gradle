@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
+
+    defaultConfig {
+        applicationId "com.gomdev.shader"
+        minSdkVersion 18
+        targetSdkVersion 21
+
+        ndk {
+            moduleName "gomdev"
+            ldLibs "log", "android", "EGL", "GLESv2"
+            stl "stlport_shared"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.google.android.gms:play-services:+'
+}

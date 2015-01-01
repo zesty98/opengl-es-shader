@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#ff4687d2</color>
+    <color name="colorPrimaryDark">#ff326aad</color>
+    <color name="colorAccent">#ff009688</color>
+    <color name="selectedTextColor">#FFFF</color>
+    <color name="defaultTextColor">#FCCC</color>
+    <color name="selectedIndicatorColor">#FFFF</color>
+
+</resources>
