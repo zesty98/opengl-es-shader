@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_info"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#88444444"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/layout_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="3dp"
         android:textColor="#FFFFFFFF" />
 
     <LinearLayout
         android:id="@+id/layout_fps"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="3dp"
             android:text="@string/sample_fps"
             android:textColor="#FFFFFFFF" />
 
@@ -27,6 +30,7 @@
             android:id="@+id/fps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="3dp"
             android:textColor="#FFFFFFFF" />
     </LinearLayout>
     

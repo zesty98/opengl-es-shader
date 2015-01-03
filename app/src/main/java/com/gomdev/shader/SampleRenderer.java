@@ -1,8 +1,5 @@
 package com.gomdev.shader;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -11,15 +8,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESUtils;
-import com.gomdev.gles.GLESConfig.Version;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 public abstract class SampleRenderer implements Renderer {
     static final String CLASS = "SampleRenderer";
@@ -48,39 +49,39 @@ public abstract class SampleRenderer implements Renderer {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case COMPILE_OR_LINK_ERROR:
-                Toast.makeText(mContext, "Compile or Link fails",
-                        Toast.LENGTH_SHORT).show();
+                case COMPILE_OR_LINK_ERROR:
+                    Toast.makeText(mContext, "Compile or Link fails",
+                            Toast.LENGTH_SHORT).show();
 
-                showCompileLog();
-                break;
-            case COMPILE_AND_LINK_SUCCESS:
-                setupInformation();
-                break;
-            case UPDATE_FPS:
-                ShaderContext context = ShaderContext.getInstance();
-                boolean showInfo = context.showInfo();
-                boolean showFPS = context.showFPS();
-                if (showInfo == true) {
-                    LinearLayout layout = (LinearLayout) ((Activity) mContext)
-                            .findViewById(R.id.layout_fps);
-                    if (showFPS == false) {
-                        layout.setVisibility(View.INVISIBLE);
-                    } else {
-                        layout.setVisibility(View.VISIBLE);
+                    showCompileLog();
+                    break;
+                case COMPILE_AND_LINK_SUCCESS:
+                    setupInformation();
+                    break;
+                case UPDATE_FPS:
+                    ShaderContext context = ShaderContext.getInstance();
+                    boolean showInfo = context.showInfo();
+                    boolean showFPS = context.showFPS();
+                    if (showInfo == true) {
+                        LinearLayout layout = (LinearLayout) ((Activity) mContext)
+                                .findViewById(R.id.layout_fps);
+                        if (showFPS == false) {
+                            layout.setVisibility(View.INVISIBLE);
+                        } else {
+                            layout.setVisibility(View.VISIBLE);
+                        }
                     }
-                }
 
-                if (showFPS == false || showInfo == false) {
-                    return;
-                }
+                    if (showFPS == false || showInfo == false) {
+                        return;
+                    }
 
-                if (mFPS == null) {
-                    mFPS = (TextView) ((Activity) mContext)
-                            .findViewById(R.id.fps);
-                }
-                mFPS.setText("" + msg.arg1);
-                break;
+                    if (mFPS == null) {
+                        mFPS = (TextView) ((Activity) mContext)
+                                .findViewById(R.id.fps);
+                    }
+                    mFPS.setText("" + msg.arg1);
+                    break;
             }
         }
 
@@ -102,13 +103,13 @@ public abstract class SampleRenderer implements Renderer {
 
             Version version = GLESContext.getInstance().getVersion();
             switch (version) {
-            case GLES_20:
-                textView.setText("OpenGL ES 2.0");
-                break;
-            case GLES_30:
-                textView.setText("OpenGL ES 3.0");
-                break;
-            default:
+                case GLES_20:
+                    textView.setText("OpenGL ES 2.0");
+                    break;
+                case GLES_30:
+                    textView.setText("OpenGL ES 3.0");
+                    break;
+                default:
 
             }
         }
@@ -201,7 +202,10 @@ public abstract class SampleRenderer implements Renderer {
         if (mIsShaderCompiled == true) {
             onDrawFrame();
         }
+    }
 
+    protected boolean onTouchEvent(MotionEvent event) {
+        return false;
     }
 
     protected abstract void onSurfaceCreated();

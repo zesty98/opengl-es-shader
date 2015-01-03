@@ -20,6 +20,7 @@ import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
 import com.gomdev.shader.coloredPointBlending.ColoredPointBlendingConfig;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
 import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
+import com.gomdev.shader.compressedTexture.CompressedTextureConfig;
 import com.gomdev.shader.cubemapAdv.CubemapAdvConfig;
 import com.gomdev.shader.cubemapBasic.CubemapBasicConfig;
 import com.gomdev.shader.icon.IconConfig;
@@ -82,6 +83,7 @@ public class SampleList {
         // setupOQ(version);
         setupIR(version);
         setupIR2(version);
+        setupCompressedTexture(version);
         // setupWhitehole(version);
 
         if (DEBUG) {
@@ -687,6 +689,36 @@ public class SampleList {
             info.mShaderTitle = new String[] {
                     "MultiLighting 30 VS",
                     "MultiLighting 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupCompressedTexture(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = CompressedTextureConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                com.gomdev.shader.compressedTexture.CompressedTextureActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "ComressedTexture 20 VS",
+                    "ComressedTexture 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "ComressedTexture 30 VS",
+                    "ComressedTexture 30 FS",
             };
         }
 
