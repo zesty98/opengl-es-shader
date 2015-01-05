@@ -1,11 +1,7 @@
 package com.gomdev.shader;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Service;
-import android.content.Context;
-import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,25 +12,21 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESUtils;
+
 @SuppressLint("InflateParams")
 public class DeviceInfoFragment extends MainFragment {
     static final String CLASS = "DeviceInfoFragment";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
-    enum GLES_VERSION {
-        GLES_10,
-        GLES_20,
-        GLES_30,
-        GLES_31
-    }
-
     private FrameLayout mLayout = null;
     private ProgressBar mProgressBar = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-            @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (DEBUG) {
             Log.d(TAG, "onCreateView() " + this);
         }
@@ -56,65 +48,51 @@ public class DeviceInfoFragment extends MainFragment {
             Log.d(TAG, "setDeviceInfo()");
         }
 
+        ShaderContext shaderContext = ShaderContext.getInstance();
+
+        GLESConfig.Version version = GLESUtils.getGLESVersion(getActivity());
+        shaderContext.setSupportedGLESVersion(version);
+
         // Hardware
         TextView hardwareView = (TextView) mLayout.findViewById(R.id.hardware);
 
-        String hardware = ShaderContext.getInstance().getHardware();
+        String hardware = shaderContext.getHardware();
         hardwareView.setText(hardware);
 
         // Architecture
         TextView architectureView = (TextView) mLayout
                 .findViewById(R.id.architecture);
 
-        String architecture = ShaderContext.getInstance().getArchitecture();
+        String architecture = shaderContext.getArchitecture();
         architectureView.setText(architecture);
 
         // Feature
         TextView featureView = (TextView) mLayout.findViewById(R.id.feature);
 
-        String feature = ShaderContext.getInstance().getFeature();
+        String feature = shaderContext.getFeature();
         featureView.setText(feature);
 
         // Vendor
         TextView vendorView = (TextView) mLayout.findViewById(R.id.vendor);
 
-        String vendor = ShaderContext.getInstance().getVendor();
+        String vendor = shaderContext.getVendor();
         vendorView.setText(vendor);
 
         // Renderer
         TextView rendererView = (TextView) mLayout.findViewById(R.id.renderer);
 
-        String renderer = ShaderContext.getInstance().getRenderer();
+        String renderer = shaderContext.getRenderer();
         rendererView.setText(renderer);
 
         // set GLESVersion
         TextView versionView = (TextView) mLayout.findViewById(R.id.version);
 
-        String versionStr = ShaderContext.getInstance().getVersion();
-        if (versionStr != null) {
-            versionView.setText(versionStr);
-        } else {
-            GLES_VERSION version = getGLESVersion();
-            switch (version) {
-            case GLES_31:
-                versionView.setText("OpenGL ES 3.1");
-                break;
-            case GLES_30:
-                versionView.setText("OpenGL ES 3.0");
-                break;
-            case GLES_20:
-                versionView.setText("OpenGL ES 2.0");
-                break;
-            case GLES_10:
-                versionView.setText("OpenGL ES 1.0");
-                break;
-            default:
-            }
-        }
+        String versionStr = getGLESVersionStr();
+        versionView.setText(versionStr);
 
         TextView extensionView = (TextView) mLayout
                 .findViewById(R.id.extensions);
-        String extensions = ShaderContext.getInstance().getExtensions();
+        String extensions = shaderContext.getExtensions();
         extensionView.setText(extensions);
 
         if (extensions != null) {
@@ -122,23 +100,32 @@ public class DeviceInfoFragment extends MainFragment {
         }
     }
 
-    private GLES_VERSION getGLESVersion() {
-        Activity activity = getActivity();
-        ActivityManager am = (ActivityManager) activity
-                .getSystemService(Context.ACTIVITY_SERVICE);
-
-        ConfigurationInfo info = am.getDeviceConfigurationInfo();
-
-        if (info.reqGlEsVersion >= 0x31000) {
-            return GLES_VERSION.GLES_31;
-        } else if (info.reqGlEsVersion >= 0x30000) {
-            return GLES_VERSION.GLES_30;
-        } else if (info.reqGlEsVersion >= 0x20000) {
-            return GLES_VERSION.GLES_20;
-        } else if (info.reqGlEsVersion >= 0x10000) {
-            return GLES_VERSION.GLES_10;
+    private String getGLESVersionStr() {
+        ShaderContext shaderContext = ShaderContext.getInstance();
+        String versionStr = shaderContext.getVersionStr();
+        if (versionStr != null) {
+            return versionStr;
+        } else {
+            GLESConfig.Version version = shaderContext.getSupportedGLESVersion();
+            switch (version) {
+                case GLES_31:
+                    versionStr = "OpenGL ES 3.1";
+                    break;
+                case GLES_30:
+                    versionStr = "OpenGL ES 3.0";
+                    break;
+                case GLES_20:
+                    versionStr = "OpenGL ES 2.0";
+                    break;
+                case GLES_10:
+                    versionStr = "OpenGL ES 1.0";
+                    break;
+                default:
+                    versionStr = "OpenGL ES 1.0";
+            }
         }
-        return GLES_VERSION.GLES_10;
+
+        return versionStr;
     }
 
     void updateDeviceInfo() {

@@ -1,8 +1,5 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.SharedPreferences;
@@ -20,6 +17,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
     static final String CLASS = "MainActivity";
@@ -135,7 +135,7 @@ public class MainActivity extends FragmentActivity {
             ShaderContext.getInstance().setExtensions(extensions);
             ShaderContext.getInstance().setRenderer(renderer);
             ShaderContext.getInstance().setVendor(vendor);
-            ShaderContext.getInstance().setVersion(version);
+            ShaderContext.getInstance().setVersionStr(version);
 
             ShaderContext.getInstance().setHardware(hardware);
             ShaderContext.getInstance().setArchitecture(architecture);
@@ -163,7 +163,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void getCPUInfo() {
-        String[] infos = new String[] {
+        String[] infos = new String[]{
                 ShaderConfig.PREF_CPU_HARDWARE,
                 ShaderConfig.PREF_CPU_ARCHITECTURE,
                 ShaderConfig.PREF_CPU_FEATURE
@@ -229,22 +229,22 @@ public class MainActivity extends FragmentActivity {
             Fragment fragment = tabInfo.mFragment;
 
             switch (position) {
-            case TAB_SAMPLELIST_POSITION:
-                if (fragment != null) {
-                    ((SampleListFragment) fragment)
-                            .resetSampleList();
-                }
-                break;
-            case TAB_DEVICEINFO_POSITION:
-                if (mIsGPUInfoUpdated == true
-                        && fragment != null) {
-                    ((DeviceInfoFragment) fragment)
-                            .updateDeviceInfo();
-                    mView.setVisibility(View.GONE);
-                    mIsGPUInfoUpdated = false;
-                }
-                break;
-            default:
+                case TAB_SAMPLELIST_POSITION:
+                    if (fragment != null) {
+                        ((SampleListFragment) fragment)
+                                .resetSampleList();
+                    }
+                    break;
+                case TAB_DEVICEINFO_POSITION:
+                    if (mIsGPUInfoUpdated == true
+                            && fragment != null) {
+                        ((DeviceInfoFragment) fragment)
+                                .updateDeviceInfo();
+                        mView.setVisibility(View.GONE);
+                        mIsGPUInfoUpdated = false;
+                    }
+                    break;
+                default:
             }
         }
     }
@@ -263,17 +263,17 @@ public class MainActivity extends FragmentActivity {
 
             Fragment fragment = null;
             switch (i) {
-            case TAB_SAMPLELIST_POSITION:
-                fragment = new SampleListFragment();
-                break;
-            case TAB_OPTIONS_POSITION:
-                fragment = new OptionsFragment();
-                break;
-            case TAB_DEVICEINFO_POSITION:
-                fragment = new DeviceInfoFragment();
-                break;
-            default:
-                fragment = new SampleListFragment();
+                case TAB_SAMPLELIST_POSITION:
+                    fragment = new SampleListFragment();
+                    break;
+                case TAB_OPTIONS_POSITION:
+                    fragment = new OptionsFragment();
+                    break;
+                case TAB_DEVICEINFO_POSITION:
+                    fragment = new DeviceInfoFragment();
+                    break;
+                default:
+                    fragment = new SampleListFragment();
             }
 
             return fragment;
@@ -302,21 +302,21 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case REMOVE_DUMMY_GL_SURFACE:
-                if (DEBUG) {
-                    Log.d(TAG, "handleMessage() REMOVE_DUMMY_GL_SURFACE");
-                }
+                case REMOVE_DUMMY_GL_SURFACE:
+                    if (DEBUG) {
+                        Log.d(TAG, "handleMessage() REMOVE_DUMMY_GL_SURFACE");
+                    }
 
-                TabInfo tabInfo = mTabInfos.get(TAB_DEVICEINFO_POSITION);
-                DeviceInfoFragment fragment = (DeviceInfoFragment) tabInfo.mFragment;
-                if (fragment != null) {
-                    fragment.updateDeviceInfo();
-                    mView.setVisibility(View.GONE);
-                } else {
-                    mIsGPUInfoUpdated = true;
-                }
-                break;
-            default:
+                    TabInfo tabInfo = mTabInfos.get(TAB_DEVICEINFO_POSITION);
+                    DeviceInfoFragment fragment = (DeviceInfoFragment) tabInfo.mFragment;
+                    if (fragment != null) {
+                        fragment.updateDeviceInfo();
+                        mView.setVisibility(View.GONE);
+                    } else {
+                        mIsGPUInfoUpdated = true;
+                    }
+                    break;
+                default:
             }
         }
     };

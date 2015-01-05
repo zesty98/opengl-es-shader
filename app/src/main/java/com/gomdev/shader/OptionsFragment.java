@@ -1,10 +1,5 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
-import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESConfig.Version;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,10 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESUtils;
+
+import java.util.ArrayList;
 
 public class OptionsFragment extends MainFragment {
     static final String CLASS = "ShaderOptionsDialog";
@@ -46,22 +47,18 @@ public class OptionsFragment extends MainFragment {
         }
     }
 
-    public static final Options[] OPTIONS = new Options[] {
-            Options.SHOW_INFO,
-            Options.USE_GLES30,
-            Options.SHOW_FPS
-    };
+    public Options[] mOptionTypes = null;
 
     private ArrayList<String> mOptions = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter = null;
-    private int mNumOfOptions = OPTIONS.length;
+    private int mNumOfOptions = 0;
 
     private SharedPreferences mPref = null;
     private SharedPreferences.Editor mPrefEditor = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-            @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (DEBUG) {
             Log.d(TAG, "onCreateView() " + this);
         }
@@ -70,6 +67,22 @@ public class OptionsFragment extends MainFragment {
         mPrefEditor = mPref.edit();
 
         getOptionsFromPref();
+
+        Version version = GLESUtils.getGLESVersion(getActivity());
+        if (version == Version.GLES_30 || version == Version.GLES_31) {
+            mOptionTypes = new Options[]{
+                    Options.SHOW_INFO,
+                    Options.USE_GLES30,
+                    Options.SHOW_FPS
+            };
+        } else {
+            mOptionTypes = new Options[]{
+                    Options.SHOW_INFO,
+                    Options.SHOW_FPS
+            };
+        }
+
+        mNumOfOptions = mOptionTypes.length;
 
         final ListView listView = makeOptionList(mNumOfOptions);
 
@@ -84,7 +97,7 @@ public class OptionsFragment extends MainFragment {
         boolean showFPS = mPref.getBoolean(ShaderConfig.PREF_SHOW_FPS, true);
         context.setShowFPS(showFPS);
         boolean useGLES30 = mPref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
-                GLESConfig.GLES_VERSION == Version.GLES_30);
+                GLESConfig.DEFAULT_GLES_VERSION == Version.GLES_30);
         context.setUseGLES30(useGLES30);
     }
 
@@ -92,7 +105,7 @@ public class OptionsFragment extends MainFragment {
         final ShaderContext context = ShaderContext.getInstance();
 
         for (int i = 0; i < mNumOfOptions; i++) {
-            mOptions.add(OPTIONS[i].getTitle());
+            mOptions.add(mOptionTypes[i].getTitle());
         }
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
@@ -106,29 +119,29 @@ public class OptionsFragment extends MainFragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                                    int position, long id) {
                 boolean isChecked = ((CheckedTextView) view).isChecked();
-                Options option = OPTIONS[position];
+                Options option = mOptionTypes[position];
                 switch (option) {
-                case SHOW_INFO:
-                    context.setShowInfo(isChecked);
-                    mPrefEditor.putBoolean(
-                            ShaderConfig.PREF_SHOW_INFO,
-                            isChecked);
-                    break;
-                case USE_GLES30:
-                    context.setUseGLES30(isChecked);
-                    mPrefEditor.putBoolean(
-                            ShaderConfig.PREF_USE_GLES_30,
-                            isChecked);
-                    break;
-                case SHOW_FPS:
-                    context.setShowFPS(isChecked);
-                    mPrefEditor.putBoolean(
-                            ShaderConfig.PREF_SHOW_FPS,
-                            isChecked);
-                    break;
-                default:
+                    case SHOW_INFO:
+                        context.setShowInfo(isChecked);
+                        mPrefEditor.putBoolean(
+                                ShaderConfig.PREF_SHOW_INFO,
+                                isChecked);
+                        break;
+                    case USE_GLES30:
+                        context.setUseGLES30(isChecked);
+                        mPrefEditor.putBoolean(
+                                ShaderConfig.PREF_USE_GLES_30,
+                                isChecked);
+                        break;
+                    case SHOW_FPS:
+                        context.setShowFPS(isChecked);
+                        mPrefEditor.putBoolean(
+                                ShaderConfig.PREF_SHOW_FPS,
+                                isChecked);
+                        break;
+                    default:
                 }
 
                 mPrefEditor.commit();
@@ -137,17 +150,17 @@ public class OptionsFragment extends MainFragment {
         });
 
         for (int i = 0; i < mNumOfOptions; i++) {
-            Options option = OPTIONS[i];
+            Options option = mOptionTypes[i];
             switch (option) {
-            case SHOW_INFO:
-                listView.setItemChecked(i, context.showInfo());
-                break;
-            case USE_GLES30:
-                listView.setItemChecked(i, context.useGLES30());
-                break;
-            case SHOW_FPS:
-                listView.setItemChecked(i, context.showFPS());
-                break;
+                case SHOW_INFO:
+                    listView.setItemChecked(i, context.showInfo());
+                    break;
+                case USE_GLES30:
+                    listView.setItemChecked(i, context.useGLES30());
+                    break;
+                case SHOW_FPS:
+                    listView.setItemChecked(i, context.showFPS());
+                    break;
             }
         }
 

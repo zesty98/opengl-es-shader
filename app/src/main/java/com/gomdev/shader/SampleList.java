@@ -1,7 +1,5 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
 import com.gomdev.shader.coloredPointAdv.ColoredPointAdvConfig;
 import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
 import com.gomdev.shader.coloredPointBlending.ColoredPointBlendingConfig;
@@ -35,6 +33,8 @@ import com.gomdev.shader.texturedPointAdv.TexturedPointAdvConfig;
 import com.gomdev.shader.texturedPointBasic.TexturedPointBasicConfig;
 import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
 
+import java.util.ArrayList;
+
 public class SampleList {
     static final String CLASS = "SampleList";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
@@ -53,7 +53,7 @@ public class SampleList {
         SharedPreferences pref = mContext.getSharedPreferences(
                 ShaderConfig.PREF_NAME, 0);
         boolean useGLES30 = pref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
-                GLESConfig.GLES_VERSION == Version.GLES_30);
+                GLESConfig.DEFAULT_GLES_VERSION == Version.GLES_30);
 
         Version version = Version.GLES_20;
         if (useGLES30 == true) {
@@ -101,22 +101,22 @@ public class SampleList {
                 com.gomdev.shader.instancedRendering.IRActivity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_20_vs,
                     R.raw.pfl_color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "IR 20 VS",
                     "IR 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.ir_30_vs,
                     R.raw.pfl_color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "IR 30 VS",
                     "IR 30 FS",
             };
@@ -132,22 +132,22 @@ public class SampleList {
                 com.gomdev.shader.instancedRendering2.IR2Activity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.ir2_20_vs,
                     R.raw.pfl_color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "IR2 20 VS",
                     "IR2 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.ir2_30_vs,
                     R.raw.pfl_color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "IR2 30 VS",
                     "IR2 30 FS",
             };
@@ -164,22 +164,22 @@ public class SampleList {
                 com.gomdev.shader.texturedRectangle.TexturedRectangleActivity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Texture Rectangle 20 VS",
                     "Texture Rectangle 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_30_vs,
                     R.raw.texture_30_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Texture Rectangle 30 VS",
                     "Texture Rectangle 30 FS",
             };
@@ -196,22 +196,22 @@ public class SampleList {
                 com.gomdev.shader.texturedCube.TexturedCubeActivity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Texture Cube 20 VS",
                     "Texture Cube 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_30_vs,
                     R.raw.texture_30_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Texture Cube 30 VS",
                     "Texture Cube 30 FS",
             };
@@ -227,22 +227,22 @@ public class SampleList {
                 com.gomdev.shader.mipmap.MipmapActivity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Mipmapping 20 VS",
                     "Mipmapping 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_30_vs,
                     R.raw.texture_30_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Mipmaping 30 VS",
                     "Mipampping 30 FS",
             };
@@ -257,22 +257,22 @@ public class SampleList {
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.coloredTriangle.ColoredTriangleActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Triangle 20 VS",
                     "Colored Triangle 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.color_30_vs,
                     R.raw.color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Triangle 30 VS",
                     "Colored Triangle 30 FS",
             };
@@ -288,22 +288,22 @@ public class SampleList {
                 mContext,
                 com.gomdev.shader.coloredRectangle.ColoredRectangleActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Rectangle 20 VS",
                     "Colored Rectangle 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.color_30_vs,
                     R.raw.color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Rectangle 30 VS",
                     "Colored Rectangle 30 FS",
             };
@@ -319,22 +319,22 @@ public class SampleList {
                 mContext,
                 com.gomdev.shader.coloredPointBasic.ColoredPointBasicActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point_color_20_vs,
                     R.raw.color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Point 20 VS",
                     "Colored Point 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point_color_30_vs,
                     R.raw.color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Point 30 VS",
                     "Colored Point 30 FS",
             };
@@ -350,22 +350,22 @@ public class SampleList {
                 mContext,
                 com.gomdev.shader.coloredPointAdv.ColoredPointAdvActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point2_color_20_vs,
                     R.raw.point2_color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Point 20 VS",
                     "Colored Point 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point2_color_30_vs,
                     R.raw.point2_color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Point 30 VS",
                     "Colored Point 30 FS",
             };
@@ -381,22 +381,22 @@ public class SampleList {
                 mContext,
                 com.gomdev.shader.texturedPointBasic.TexturedPointBasicActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point_texture_20_vs,
                     R.raw.point_texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Textured Point 20 VS",
                     "Textured Point 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point_texture_30_vs,
                     R.raw.point_texture_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Textured Point 30 VS",
                     "Textured Point 30 FS",
             };
@@ -412,22 +412,22 @@ public class SampleList {
                 mContext,
                 com.gomdev.shader.texturedPointAdv.TexturedPointAdvActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point2_texture_20_vs,
                     R.raw.point2_texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Textured Point 20 VS",
                     "Textured Point 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point2_texture_30_vs,
                     R.raw.point2_texture_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Textured Point 30 VS",
                     "Textured Point 30 FS",
             };
@@ -443,28 +443,28 @@ public class SampleList {
                 mContext,
                 com.gomdev.shader.coloredPointBlending.ColoredPointBlendingActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point_cs_20_vs,
                     R.raw.custom_point_c_20_fs,
                     R.raw.color_20_vs,
                     R.raw.color_20_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Point 20 VS",
                     "Colored Point 20 FS",
                     "Cube 20 VS",
                     "Cube 20 FS"
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.point_cs_30_vs,
                     R.raw.custom_point_c_30_fs,
                     R.raw.color_30_vs,
                     R.raw.color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Colored Point 30 VS",
                     "Colored Point 30 FS",
                     "Cube 30 VS",
@@ -481,28 +481,28 @@ public class SampleList {
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.icon.IconActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Object 20 VS",
                     "Object 20 FS",
                     "BG 20 VS",
                     "BG 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.color_30_vs,
                     R.raw.color_30_fs,
                     R.raw.texture_30_vs,
                     R.raw.texture_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Object 30 VS",
                     "Object 30 FS",
                     "BG 30 VS",
@@ -519,22 +519,22 @@ public class SampleList {
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.perVertexLighting.PVLActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pvl_color_20_vs,
                     R.raw.pvl_color_20_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Per Vertex Lighting 20 VS",
                     "Per Vertex Lighting 20 FS"
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pvl_color_30_vs,
                     R.raw.pvl_color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Per Vertex Lighting 30 VS",
                     "Per Vertex Lighting 30 FS"
             };
@@ -550,22 +550,22 @@ public class SampleList {
                 com.gomdev.shader.cubemapBasic.CubemapBasicActivity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.cubemap_texture_20_vs,
                     R.raw.cubemap_texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Cubemap 20 VS",
                     "Cubemap 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.cubemap_texture_30_vs,
                     R.raw.cubemap_texture_30_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Cubemap 30 VS",
                     "Cubemap 30 FS",
             };
@@ -573,7 +573,7 @@ public class SampleList {
 
         mSamples.add(info);
     }
-    
+
     private void setupCubemapAdv(Version version) {
         SampleInfo info = new SampleInfo();
         info.mSampleName = CubemapAdvConfig.EFFECT_NAME;
@@ -581,22 +581,22 @@ public class SampleList {
                 com.gomdev.shader.cubemapAdv.CubemapAdvActivity.class);
 
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.cubemap2_texture_20_vs,
                     R.raw.cubemap2_texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Cubemap 20 VS",
                     "Cubemap 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.cubemap2_texture_30_vs,
                     R.raw.cubemap2_texture_30_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Cubemap 30 VS",
                     "Cubemap 30 FS",
             };
@@ -611,22 +611,22 @@ public class SampleList {
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.perFragmentLighting.PFLActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_20_vs,
                     R.raw.pfl_color_20_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Per Fragment Lighting 20 VS",
                     "Per Fragment Lighting 20 FS"
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_30_vs,
                     R.raw.pfl_color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "Per Fragment Lighting 30 VS",
                     "Per Fragment Lighting 30 FS"
             };
@@ -671,22 +671,22 @@ public class SampleList {
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.multiLighting.MultiLightingActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_20_vs,
                     R.raw.pfl_color_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "MultiLighting 20 VS",
                     "MultiLighting 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_30_vs,
                     R.raw.pfl_color_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "MultiLighting 30 VS",
                     "MultiLighting 30 FS",
             };
@@ -701,22 +701,22 @@ public class SampleList {
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.compressedTexture.CompressedTextureActivity.class);
         if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "ComressedTexture 20 VS",
                     "ComressedTexture 20 FS",
             };
         } else {
-            info.mShaderResIDs = new int[] {
+            info.mShaderResIDs = new int[]{
                     R.raw.texture_30_vs,
                     R.raw.texture_30_fs
             };
 
-            info.mShaderTitle = new String[] {
+            info.mShaderTitle = new String[]{
                     "ComressedTexture 30 VS",
                     "ComressedTexture 30 FS",
             };
@@ -802,7 +802,7 @@ public class SampleList {
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
+                                long id) {
             String sampleName = parent.getItemAtPosition(position).toString();
 
             SampleInfo info = getSampleInfo(sampleName);

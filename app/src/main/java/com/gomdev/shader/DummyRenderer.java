@@ -1,14 +1,14 @@
 package com.gomdev.shader;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
 import android.util.Log;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 public class DummyRenderer implements Renderer {
     static final String CLASS = "DummyRenderer";
@@ -58,7 +58,7 @@ public class DummyRenderer implements Renderer {
 
         // version
         String version = GLES20.glGetString(GLES20.GL_VERSION);
-        ShaderContext.getInstance().setVersion(version);
+        ShaderContext.getInstance().setVersionStr(version);
 
         editor.putString(ShaderConfig.PREF_GLES_VERSION, version);
 

@@ -1,10 +1,10 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
+
+import java.util.ArrayList;
 
 public class ShaderContext {
     static final String CLASS = "ShaderContext";
@@ -20,7 +20,7 @@ public class ShaderContext {
 
     private boolean mShowInfo = true;
     private boolean mShowFPS = true;
-    private boolean mUseGLES30 = (GLESConfig.GLES_VERSION == Version.GLES_30) ? true
+    private boolean mUseGLES30 = (GLESConfig.DEFAULT_GLES_VERSION == Version.GLES_30) ? true
             : false;
 
     private String mExtensions = null;
@@ -31,6 +31,8 @@ public class ShaderContext {
     private String mHardware = null;
     private String mArchitecture = null;
     private String mFeature = null;
+
+    private Version mSupportedGLESVersion = Version.GLES_20;
 
     public static ShaderContext getInstance() {
         return sShaderContext;
@@ -62,7 +64,7 @@ public class ShaderContext {
     }
 
     public void setShaderInfo(String sampleName, String title,
-            int resID, String filePath) {
+                              int resID, String filePath) {
         ShaderInfo shader = new ShaderInfo();
         shader.mSampleName = sampleName;
         shader.mTitle = title;
@@ -109,6 +111,12 @@ public class ShaderContext {
     }
 
     public void setUseGLES30(boolean useGLES30) {
+        Version supportedVersion = ShaderContext.getInstance().getSupportedGLESVersion();
+        if (supportedVersion != Version.GLES_30 && supportedVersion != Version.GLES_31) {
+            mUseGLES30 = false;
+            GLESContext.getInstance().setVersion(Version.GLES_20);
+            return;
+        }
         mUseGLES30 = useGLES30;
 
         if (useGLES30 == true) {
@@ -146,11 +154,11 @@ public class ShaderContext {
         return mVendor;
     }
 
-    public void setVersion(String version) {
+    public void setVersionStr(String version) {
         mVersion = version;
     }
 
-    public String getVersion() {
+    public String getVersionStr() {
         return mVersion;
     }
 
@@ -176,5 +184,13 @@ public class ShaderContext {
 
     public String getFeature() {
         return mFeature;
+    }
+
+    public void setSupportedGLESVersion(Version version) {
+        mSupportedGLESVersion = version;
+    }
+
+    public Version getSupportedGLESVersion() {
+        return mSupportedGLESVersion;
     }
 }
