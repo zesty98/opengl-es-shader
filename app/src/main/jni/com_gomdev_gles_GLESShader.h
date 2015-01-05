@@ -15,7 +15,15 @@ extern "C" {
  * Method:    nGetShaderCompileLog
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderCompileLog
+JNIEXPORT jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderInfoLog
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_gomdev_gles_GLESShader
+ * Method:    nGetShaderCompileLog
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetProgramInfoLog
   (JNIEnv *, jobject, jint);
 
 /*

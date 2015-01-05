@@ -221,7 +221,7 @@ void checkGLError(char* str) {
 
 
 
-jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderCompileLog(
+jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderInfoLog(
         JNIEnv * env, jobject obj, jint shader) {
     GLint infoLen = 0;
 
@@ -233,6 +233,26 @@ jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderCompileLog(
     char* infoLog = (char*) malloc(sizeof(char) * infoLen);
 
     glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
+    jstring result = env->NewStringUTF(infoLog);
+
+    free(infoLog);
+
+    return result;
+
+}
+
+jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetProgramInfoLog(
+        JNIEnv * env, jobject obj, jint program) {
+    GLint infoLen = 0;
+
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLen);
+    if (infoLen <= 1) {
+        infoLen = 1024;
+    }
+
+    char* infoLog = (char*) malloc(sizeof(char) * infoLen);
+
+    glGetProgramInfoLog(program, infoLen, NULL, infoLog);
     jstring result = env->NewStringUTF(infoLog);
 
     free(infoLog);
