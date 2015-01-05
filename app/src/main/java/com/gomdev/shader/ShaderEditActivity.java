@@ -1,14 +1,13 @@
 package com.gomdev.shader;
 
-import com.gomdev.shader.R;
-import com.gomdev.gles.GLESFileUtils;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.gomdev.gles.GLESFileUtils;
 
 public class ShaderEditActivity extends Activity implements Ad {
     static final String CLASS = "ShaderEditActivity";
@@ -58,24 +57,24 @@ public class ShaderEditActivity extends Activity implements Ad {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.save:
-            if (GLESFileUtils.isExternalStorageWriable() == false) {
-                Toast.makeText(this, "SDCard is not available",
-                        Toast.LENGTH_SHORT).show();
-                return false;
-            }
+            case R.id.save:
+                if (GLESFileUtils.isExternalStorageWriable() == false) {
+                    Toast.makeText(this, "SDCard is not available",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }
 
-            ShaderContext context = ShaderContext.getInstance();
-            String savedFileName = context.getSavedShaderInfo().mFilePath;
+                ShaderContext context = ShaderContext.getInstance();
+                String savedFileName = context.getSavedShaderInfo().mFilePath;
 
-            GLESFileUtils.write(savedFileName, mEditView.getText().toString());
+                GLESFileUtils.write(savedFileName, mEditView.getText().toString());
 
-            Toast.makeText(this, savedFileName + " Saved", Toast.LENGTH_SHORT)
-                    .show();
+                Toast.makeText(this, savedFileName + " Saved", Toast.LENGTH_SHORT)
+                        .show();
 
-            this.finish();
+                this.finish();
 
-            return true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -19,7 +19,7 @@ public class PlaceholderFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(mFragmentLayoutID, container,
                 false);
         return rootView;

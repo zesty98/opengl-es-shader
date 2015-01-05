@@ -16,12 +16,12 @@
 
 package com.gomdev.shader.coloredPointAdv;
 
-import com.gomdev.shader.SampleActivity;
-import com.gomdev.shader.R;
-
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
+
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleActivity;
 
 public class ColoredPointAdvActivity extends SampleActivity {
     private ColoredPointAdvRenderer mRenderer;
@@ -65,15 +65,15 @@ public class ColoredPointAdvActivity extends SampleActivity {
         float y = event.getY();
 
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-            ((ColoredPointAdvRenderer) mRenderer).touchDown(x, y);
-            break;
-        case MotionEvent.ACTION_UP:
-            ((ColoredPointAdvRenderer) mRenderer).touchUp(x, y);
-            break;
-        case MotionEvent.ACTION_MOVE:
-            ((ColoredPointAdvRenderer) mRenderer).touchMove(x, y);
-            break;
+            case MotionEvent.ACTION_DOWN:
+                ((ColoredPointAdvRenderer) mRenderer).touchDown(x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                ((ColoredPointAdvRenderer) mRenderer).touchUp(x, y);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                ((ColoredPointAdvRenderer) mRenderer).touchMove(x, y);
+                break;
         }
 
         return super.onTouchEvent(event);

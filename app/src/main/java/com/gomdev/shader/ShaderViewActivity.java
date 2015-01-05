@@ -1,7 +1,5 @@
 package com.gomdev.shader;
 
-import com.gomdev.shader.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,9 +60,9 @@ public class ShaderViewActivity extends Activity implements Ad {
         Intent intent = new Intent(this,
                 com.gomdev.shader.ShaderEditActivity.class);
         switch (item.getItemId()) {
-        case R.id.edit:
-            startActivity(intent);
-            return true;
+            case R.id.edit:
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -16,12 +16,12 @@
 
 package com.gomdev.shader.occlusionQuery;
 
-import com.gomdev.shader.SampleActivity;
-import com.gomdev.shader.R;
-
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
+
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleActivity;
 
 public class OQActivity extends SampleActivity {
     private OQRenderer mRenderer;
@@ -65,15 +65,15 @@ public class OQActivity extends SampleActivity {
         float y = event.getY();
 
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-            ((OQRenderer) mRenderer).touchDown(x, y);
-            break;
-        case MotionEvent.ACTION_UP:
-            ((OQRenderer) mRenderer).touchUp(x, y);
-            break;
-        case MotionEvent.ACTION_MOVE:
-            ((OQRenderer) mRenderer).touchMove(x, y);
-            break;
+            case MotionEvent.ACTION_DOWN:
+                ((OQRenderer) mRenderer).touchDown(x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                ((OQRenderer) mRenderer).touchUp(x, y);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                ((OQRenderer) mRenderer).touchMove(x, y);
+                break;
         }
 
         return super.onTouchEvent(event);

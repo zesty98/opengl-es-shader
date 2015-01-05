@@ -16,12 +16,12 @@
 
 package com.gomdev.shader.instancedRendering;
 
-import com.gomdev.shader.SampleActivity;
-import com.gomdev.shader.R;
-
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
+
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleActivity;
 
 public class IRActivity extends SampleActivity {
     private IRRenderer mRenderer;
@@ -65,15 +65,15 @@ public class IRActivity extends SampleActivity {
         float y = event.getY();
 
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-            ((IRRenderer) mRenderer).touchDown(x, y);
-            break;
-        case MotionEvent.ACTION_UP:
-            ((IRRenderer) mRenderer).touchUp(x, y);
-            break;
-        case MotionEvent.ACTION_MOVE:
-            ((IRRenderer) mRenderer).touchMove(x, y);
-            break;
+            case MotionEvent.ACTION_DOWN:
+                ((IRRenderer) mRenderer).touchDown(x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                ((IRRenderer) mRenderer).touchUp(x, y);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                ((IRRenderer) mRenderer).touchMove(x, y);
+                break;
         }
 
         return super.onTouchEvent(event);

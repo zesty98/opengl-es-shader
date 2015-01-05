@@ -16,13 +16,6 @@
 
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
-import com.gomdev.gles.GLESContext;
-import com.gomdev.gles.GLESFileUtils;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
@@ -32,6 +25,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESFileUtils;
+
+import java.util.ArrayList;
 
 @SuppressLint("Registered")
 public class SampleActivity extends Activity implements Ad {
@@ -80,12 +79,12 @@ public class SampleActivity extends Activity implements Ad {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.shader_list:
-            showShaderListDialog();
-            return true;
-        case R.id.restore:
-            showRestoreDialog();
-            return true;
+            case R.id.shader_list:
+                showShaderListDialog();
+                return true;
+            case R.id.restore:
+                showRestoreDialog();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -127,14 +126,14 @@ public class SampleActivity extends Activity implements Ad {
     protected void setGLESVersion() {
         Version version = GLESContext.getInstance().getVersion();
         switch (version) {
-        case GLES_20:
-            mView.setEGLContextClientVersion(2);
-            break;
-        case GLES_30:
-            mView.setEGLContextClientVersion(3);
-            break;
-        default:
-            mView.setEGLContextClientVersion(2);
+            case GLES_20:
+                mView.setEGLContextClientVersion(2);
+                break;
+            case GLES_30:
+                mView.setEGLContextClientVersion(3);
+                break;
+            default:
+                mView.setEGLContextClientVersion(2);
         }
     }
 }

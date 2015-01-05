@@ -1,24 +1,38 @@
 package com.gomdev.shader.texturedPointAdv;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
-import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.R;
-import com.gomdev.shader.ShaderUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.animation.Interpolator;
 import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESParticle;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRendererListener;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTexture;
+import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
+
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 public class TexturedPointAdvRenderer extends SampleRenderer implements
         GLESRendererListener {
@@ -310,7 +324,7 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
                 normalizedDist[yDistOffset + xDistOffset] = 1f;
             }
         }
-        
+
         int attribIndex = mShader.getPositionAttribIndex();
         vertexInfo.setBuffer(attribIndex, position, NUM_ELEMENT_OF_POSITION);
         mPosBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);

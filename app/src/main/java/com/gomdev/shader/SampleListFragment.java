@@ -1,7 +1,5 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class SampleListFragment extends MainFragment {
     private SampleList mSampleList = null;
 
@@ -19,7 +19,7 @@ public class SampleListFragment extends MainFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         if (DEBUG) {
             Log.d(TAG, "onCreateView() " + this);
         }
@@ -53,7 +53,7 @@ public class SampleListFragment extends MainFragment {
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
+                                long id) {
             String sampleName = parent.getItemAtPosition(position).toString();
 
             SampleInfo info = mSampleList.getSampleInfo(sampleName);

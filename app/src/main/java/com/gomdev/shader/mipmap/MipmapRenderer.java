@@ -1,15 +1,30 @@
 package com.gomdev.shader.mipmap;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
+
+import com.gomdev.gles.GLESBitmapInfo;
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTexture;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class MipmapRenderer extends SampleRenderer {
     private static final String CLASS = "MipmapRenderer";
@@ -94,8 +109,8 @@ public class MipmapRenderer extends SampleRenderer {
             mNonMipmap.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils
-                    .createPlane(mShader, 
-                            mScreenRatio * 2f, mScreenRatio * 2f, 
+                    .createPlane(mShader,
+                            mScreenRatio * 2f, mScreenRatio * 2f,
                             false, true, false, false);
             mNonMipmap.setVertexInfo(vertexInfo, true, true);
 
@@ -112,7 +127,7 @@ public class MipmapRenderer extends SampleRenderer {
 
             GLESVertexInfo vertexInfo = GLESMeshUtils
                     .createPlane(mShader,
-                            mScreenRatio * 2f, mScreenRatio * 2f, 
+                            mScreenRatio * 2f, mScreenRatio * 2f,
                             false, true, false, false);
             mMipmap.setVertexInfo(vertexInfo, true, true);
 

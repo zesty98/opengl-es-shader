@@ -1,14 +1,31 @@
 package com.gomdev.shader.multiLighting;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
+
+import com.gomdev.gles.GLESAnimator;
+import com.gomdev.gles.GLESAnimatorCallback;
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESNodeListener;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESVector3;
+import com.gomdev.gles.GLESVector4;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class MultiLightingRenderer extends SampleRenderer {
     static final String CLASS = "PVLRenderer";
@@ -141,8 +158,8 @@ public class MultiLightingRenderer extends SampleRenderer {
             mLight1.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(mShader,
-                    0.1f, 10, 10, 
-                    false, true, true, 
+                    0.1f, 10, 10,
+                    false, true, true,
                     1f, 0f, 0f, 1f);
             mLight1.setVertexInfo(vertexInfo, true, false);
         }
@@ -151,8 +168,8 @@ public class MultiLightingRenderer extends SampleRenderer {
             mLight2.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(mShader,
-                    0.04f, 10, 10, 
-                    false, true, true, 
+                    0.04f, 10, 10,
+                    false, true, true,
                     0, 1f, 0f, 1f);
             mLight2.setVertexInfo(vertexInfo, true, false);
         }
@@ -330,7 +347,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                     normalMatrix, 0);
 
             if (mVersion == Version.GLES_20) {
-                float[] lightPos = new float[] {
+                float[] lightPos = new float[]{
                         mLight1Pos.mX,
                         mLight1Pos.mY,
                         mLight1Pos.mZ,
@@ -342,7 +359,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                 };
                 GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
-                int[] lightState = new int[] {
+                int[] lightState = new int[]{
                         1,
                         1,
                         0,
@@ -359,7 +376,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                 GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
                         mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
 
-                int[] lightState = new int[] {
+                int[] lightState = new int[]{
                         1,
                         1
                 };
@@ -400,7 +417,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                     normalMatrix, 0);
 
             if (mVersion == Version.GLES_20) {
-                float[] lightPos = new float[] {
+                float[] lightPos = new float[]{
                         mLight1Pos.mX,
                         mLight1Pos.mY,
                         mLight1Pos.mZ,
@@ -412,7 +429,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                 };
                 GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
-                int[] lightState = new int[] {
+                int[] lightState = new int[]{
                         0,
                         1,
                         0,
@@ -429,7 +446,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                 GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
                         mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
 
-                int[] lightState = new int[] {
+                int[] lightState = new int[]{
                         0,
                         1
                 };
@@ -475,7 +492,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                     normalMatrix, 0);
 
             if (mVersion == Version.GLES_20) {
-                float[] lightPos = new float[] {
+                float[] lightPos = new float[]{
                         mLight1Pos.mX,
                         mLight1Pos.mY,
                         mLight1Pos.mZ,
@@ -487,7 +504,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                 };
                 GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
-                int[] lightState = new int[] {
+                int[] lightState = new int[]{
                         1,
                         0,
                         0,
@@ -505,7 +522,7 @@ public class MultiLightingRenderer extends SampleRenderer {
                 // GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
                 // mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
 
-                int[] lightState = new int[] {
+                int[] lightState = new int[]{
                         1,
                         0
                 };

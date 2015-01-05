@@ -1,13 +1,24 @@
 package com.gomdev.shader.coloredRectangle;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class ColoredRectangleRenderer extends SampleRenderer {
     private static final String CLASS = "ColoredCubeRenderer";
@@ -84,7 +95,7 @@ public class ColoredRectangleRenderer extends SampleRenderer {
 
         mBasicObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mBasicShader, 
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mBasicShader,
                 mScreenRatio * 2f - 0.1f, 2f - 0.1f, false, false, true, false,
                 1f, 0f, 0f);
         mBasicObject.setVertexInfo(vertexInfo, true, true);

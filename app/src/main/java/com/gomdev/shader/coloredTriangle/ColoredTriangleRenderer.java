@@ -1,13 +1,24 @@
 package com.gomdev.shader.coloredTriangle;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class ColoredTriangleRenderer extends SampleRenderer {
     private static final String CLASS = "ColoredTriangleRenderer";

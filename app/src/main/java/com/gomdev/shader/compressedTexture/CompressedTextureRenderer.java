@@ -15,12 +15,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESDDSDecoder;
 import com.gomdev.gles.GLESCamera;
 import com.gomdev.gles.GLESCompressedTextureInfo;
+import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESDDSDecoder;
 import com.gomdev.gles.GLESGLState;
 import com.gomdev.gles.GLESMeshUtils;
 import com.gomdev.gles.GLESNode;
@@ -260,7 +260,7 @@ public class CompressedTextureRenderer extends SampleRenderer {
             }
             GLESTexture.Builder builder = new GLESTexture.Builder(
                     GLES20.GL_TEXTURE_2D, textureInfo.getWidth(), textureInfo.getHeight())
-            .setInternalFormat(GLESConfig.GL_ETC1_RGB8_OES);
+                    .setInternalFormat(GLESConfig.GL_ETC1_RGB8_OES);
             mETC1Texture = builder.load(textureInfo.getData());
         }
 

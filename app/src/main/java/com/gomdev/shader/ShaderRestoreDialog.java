@@ -1,9 +1,5 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
-import com.gomdev.gles.GLESFileUtils;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.gomdev.gles.GLESFileUtils;
+
+import java.util.ArrayList;
 
 public class ShaderRestoreDialog extends DialogFragment {
     static final String CLASS = "ShaderRestoreDialog";
@@ -61,7 +61,7 @@ public class ShaderRestoreDialog extends DialogFragment {
 
                             @Override
                             public void onClick(DialogInterface dialog,
-                                    int which) {
+                                                int which) {
                                 mListView.clearChoices();
                             }
                         });

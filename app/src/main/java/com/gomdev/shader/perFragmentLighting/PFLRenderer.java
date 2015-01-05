@@ -1,14 +1,30 @@
 package com.gomdev.shader.perFragmentLighting;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
+
+import com.gomdev.gles.GLESAnimator;
+import com.gomdev.gles.GLESAnimatorCallback;
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESVector3;
+import com.gomdev.gles.GLESVector4;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class PFLRenderer extends SampleRenderer {
     private static final String CLASS = "PVLRenderer";
@@ -115,7 +131,7 @@ public class PFLRenderer extends SampleRenderer {
             mLightObject.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(mShader,
-                    0.1f, 10, 10, 
+                    0.1f, 10, 10,
                     false, true, true);
             mLightObject.setVertexInfo(vertexInfo, true, false);
         }
@@ -286,7 +302,7 @@ public class PFLRenderer extends SampleRenderer {
                     mCubeLight.mZ,
                     mCubeLight.mW);
 
-            int[] lightState = new int[] {
+            int[] lightState = new int[]{
                     1,
                     0,
                     0,
@@ -342,7 +358,7 @@ public class PFLRenderer extends SampleRenderer {
                     mLightLight.mZ,
                     mLightLight.mW);
 
-            int[] lightState = new int[] {
+            int[] lightState = new int[]{
                     1,
                     0,
                     0,

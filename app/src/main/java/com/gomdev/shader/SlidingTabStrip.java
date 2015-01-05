@@ -180,10 +180,9 @@ class SlidingTabStrip extends LinearLayout {
 
     /**
      * Blend {@code color1} and {@code color2} using the given ratio.
-     * 
-     * @param ratio
-     *            of which to blend. 1.0 will return {@code color1}, 0.5 will
-     *            give an even blend, 0.0 will return {@code color2}.
+     *
+     * @param ratio of which to blend. 1.0 will return {@code color1}, 0.5 will
+     *              give an even blend, 0.0 will return {@code color2}.
      */
     private static int blendColors(int color1, int color2, float ratio) {
         final float inverseRation = 1f - ratio;

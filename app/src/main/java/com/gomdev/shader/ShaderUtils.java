@@ -1,5 +1,12 @@
 package com.gomdev.shader;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.gomdev.gles.GLESFileUtils;
+import com.gomdev.gles.GLESUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,13 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gomdev.gles.GLESFileUtils;
-import com.gomdev.gles.GLESUtils;
-
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
-
 public class ShaderUtils {
     static final String CLASS = "ShaderUtils";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
@@ -24,7 +24,7 @@ public class ShaderUtils {
     private static final String CPU_FILE = "/proc/cpuinfo";
 
     public static String getSavedFilePath(Context context, String prefix,
-            String shaderTitle) {
+                                          String shaderTitle) {
         File file = context.getExternalFilesDir(null);
         StringBuilder builder = new StringBuilder(file.getAbsolutePath());
         builder.append(File.separatorChar);

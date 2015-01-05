@@ -1,17 +1,29 @@
 package com.gomdev.shader.cubemapAdv;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.R;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTexture;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class CubemapAdvRenderer extends SampleRenderer {
     private static final String CLASS = "CubemapAdvRenderer";
@@ -37,7 +49,7 @@ public class CubemapAdvRenderer extends SampleRenderer {
 
     private float mScreenRatio = 0f;
 
-    private int[] mResIDs = new int[] {
+    private int[] mResIDs = new int[]{
             R.drawable.x_pos,
             R.drawable.x_neg,
             R.drawable.y_pos,

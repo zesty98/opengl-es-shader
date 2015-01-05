@@ -1,25 +1,37 @@
 package com.gomdev.shader.coloredPointAdv;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Random;
-
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
-import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.R;
-import com.gomdev.shader.ShaderUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.animation.Interpolator;
 import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESParticle;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTexture;
+import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
+
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ColoredPointAdvRenderer extends SampleRenderer {
     private static final String CLASS = "ColoredPointAdbRenderer";

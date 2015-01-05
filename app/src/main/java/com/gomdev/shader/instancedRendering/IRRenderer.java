@@ -1,19 +1,35 @@
 package com.gomdev.shader.instancedRendering;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.util.Log;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRendererListener;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVector4;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class IRRenderer extends SampleRenderer implements GLESRendererListener {
     private static final String CLASS = "IRRenderer";
@@ -173,7 +189,7 @@ public class IRRenderer extends SampleRenderer implements GLESRendererListener {
                 mLightPos.mZ,
                 mLightPos.mW);
         location = GLES20.glGetUniformLocation(program, "uLightState");
-        int[] lightState = new int[] {
+        int[] lightState = new int[]{
                 1,
                 0,
                 0,
@@ -260,7 +276,7 @@ public class IRRenderer extends SampleRenderer implements GLESRendererListener {
         mVBOID = vboIDs[0];
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vboIDs[0]);
         GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mTransBuffer.capacity()
-                * GLESConfig.FLOAT_SIZE_BYTES,
+                        * GLESConfig.FLOAT_SIZE_BYTES,
                 mTransBuffer, GLES30.GL_STATIC_DRAW);
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
     }

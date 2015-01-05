@@ -1,13 +1,13 @@
 package com.gomdev.shader;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class AdFragment extends Fragment {
     static final String CLASS = "AdFragment";
@@ -16,7 +16,7 @@ public class AdFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = null;
 
         if (ShaderConfig.ENABLE_AD) {

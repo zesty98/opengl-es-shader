@@ -1,17 +1,31 @@
 package com.gomdev.shader.icon;
 
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-import com.gomdev.shader.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESNodeListener;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTexture;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
 
 public class IconRenderer extends SampleRenderer {
     private static final String CLASS = "IconRenderer";

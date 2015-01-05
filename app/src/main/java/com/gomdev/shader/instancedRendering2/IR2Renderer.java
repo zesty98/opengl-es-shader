@@ -1,19 +1,33 @@
 package com.gomdev.shader.instancedRendering2;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.ShaderUtils;
-
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.util.Log;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVector4;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class IR2Renderer extends SampleRenderer {
     private static final String CLASS = "IR2Renderer";
@@ -129,7 +143,7 @@ public class IR2Renderer extends SampleRenderer {
         makeInstanceDataBuffer();
 
         if (mVersion == Version.GLES_20) {
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader, 
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader,
                     0.1f, true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
         } else {
@@ -260,7 +274,7 @@ public class IR2Renderer extends SampleRenderer {
                 mLightPos.mW);
 
         location = GLES20.glGetUniformLocation(program, "uLightState");
-        int[] lightState = new int[] {
+        int[] lightState = new int[]{
                 1,
                 0,
                 0,

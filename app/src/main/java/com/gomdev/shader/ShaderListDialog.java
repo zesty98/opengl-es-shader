@@ -1,13 +1,13 @@
 package com.gomdev.shader;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.ArrayList;
 
 public class ShaderListDialog extends DialogFragment {
     static final String CLASS = "ShaderListDialog";

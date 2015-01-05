@@ -1,18 +1,5 @@
 package com.gomdev.shader.coloredPointBlending;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
-
-import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
-import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.SampleRenderer;
-import com.gomdev.shader.R;
-import com.gomdev.shader.ShaderUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -23,6 +10,34 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
+import com.gomdev.gles.GLESCamera;
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESGLState;
+import com.gomdev.gles.GLESMeshUtils;
+import com.gomdev.gles.GLESNode;
+import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESParticle;
+import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRendererListener;
+import com.gomdev.gles.GLESSceneManager;
+import com.gomdev.gles.GLESShader;
+import com.gomdev.gles.GLESShaderConstant;
+import com.gomdev.gles.GLESTransform;
+import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVertexInfo;
+import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
+import com.gomdev.shader.R;
+import com.gomdev.shader.SampleRenderer;
+import com.gomdev.shader.ShaderUtils;
+
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class ColoredPointBlendingRenderer extends SampleRenderer implements
         GLESRendererListener {
@@ -301,7 +316,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
     }
 
     private void quicksort(LinkedList<GLESParticle> particles, int left,
-            int right) {
+                           int right) {
         if (left < right) {
             int p = partition(particles, left, right);
             quicksort(particles, left, p - 1);
@@ -310,7 +325,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
     }
 
     private int partition(LinkedList<GLESParticle> particles, int left,
-            int right) {
+                          int right) {
         int pivotIndex = right;
         GLESParticle pivotParticle = particles.get(pivotIndex);
         float pivotValue = pivotParticle.mZ;
@@ -429,73 +444,73 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
         int index = mIndex % 4;
 
         switch (index) {
-        case 0:
-            mState.setDepthState(true);
-            mState.setBlendState(true);
-            mState.setBlendFunc(
-                    GLES20.GL_SRC_ALPHA,
-                    GLES20.GL_ONE_MINUS_SRC_ALPHA);
-            mIsParticlesSorted = false;
+            case 0:
+                mState.setDepthState(true);
+                mState.setBlendState(true);
+                mState.setBlendFunc(
+                        GLES20.GL_SRC_ALPHA,
+                        GLES20.GL_ONE_MINUS_SRC_ALPHA);
+                mIsParticlesSorted = false;
 
-            builder = new StringBuilder();
-            builder.append("DepthTest : enable\n");
-            builder.append("Sorting : false\n");
-            builder.append("Blending : enable\n");
-            builder.append("BlendFunc : \n");
-            builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
-            builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
+                builder = new StringBuilder();
+                builder.append("DepthTest : enable\n");
+                builder.append("Sorting : false\n");
+                builder.append("Blending : enable\n");
+                builder.append("BlendFunc : \n");
+                builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
+                builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
 
-            mBlendingInfoView.setText(builder.toString());
-            break;
-        case 1:
-            mState.setDepthState(false);
-            mState.setBlendState(true);
-            mState.setBlendFunc(
-                    GLES20.GL_SRC_ALPHA,
-                    GLES20.GL_ONE_MINUS_SRC_ALPHA);
-            mIsParticlesSorted = false;
+                mBlendingInfoView.setText(builder.toString());
+                break;
+            case 1:
+                mState.setDepthState(false);
+                mState.setBlendState(true);
+                mState.setBlendFunc(
+                        GLES20.GL_SRC_ALPHA,
+                        GLES20.GL_ONE_MINUS_SRC_ALPHA);
+                mIsParticlesSorted = false;
 
-            builder = new StringBuilder();
-            builder.append("DepthTest : disable\n");
-            builder.append("Sorting : false\n");
-            builder.append("Blending : enable\n");
-            builder.append("BlendFunc : \n");
-            builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
-            builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
+                builder = new StringBuilder();
+                builder.append("DepthTest : disable\n");
+                builder.append("Sorting : false\n");
+                builder.append("Blending : enable\n");
+                builder.append("BlendFunc : \n");
+                builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
+                builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
 
-            mBlendingInfoView.setText(builder.toString());
-            break;
-        case 2:
-            mState.setDepthState(true);
-            mState.setBlendState(true);
-            mState.setBlendFunc(
-                    GLES20.GL_SRC_ALPHA,
-                    GLES20.GL_ONE_MINUS_SRC_ALPHA);
-            mIsParticlesSorted = true;
+                mBlendingInfoView.setText(builder.toString());
+                break;
+            case 2:
+                mState.setDepthState(true);
+                mState.setBlendState(true);
+                mState.setBlendFunc(
+                        GLES20.GL_SRC_ALPHA,
+                        GLES20.GL_ONE_MINUS_SRC_ALPHA);
+                mIsParticlesSorted = true;
 
-            builder = new StringBuilder();
-            builder.append("DepthTest : enable\n");
-            builder.append("Sorting : true\n");
-            builder.append("Blending : enable\n");
-            builder.append("BlendFunc : \n");
-            builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
-            builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
+                builder = new StringBuilder();
+                builder.append("DepthTest : enable\n");
+                builder.append("Sorting : true\n");
+                builder.append("Blending : enable\n");
+                builder.append("BlendFunc : \n");
+                builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
+                builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
 
-            mBlendingInfoView.setText(builder.toString());
-            break;
-        case 3:
-            mState.setDepthState(true);
-            mState.setBlendState(false);
-            mIsParticlesSorted = false;
+                mBlendingInfoView.setText(builder.toString());
+                break;
+            case 3:
+                mState.setDepthState(true);
+                mState.setBlendState(false);
+                mIsParticlesSorted = false;
 
-            builder = new StringBuilder();
-            builder.append("DepthTest : enable\n");
-            builder.append("Sorting : false\n");
-            builder.append("Blending : disable\n");
+                builder = new StringBuilder();
+                builder.append("DepthTest : enable\n");
+                builder.append("Sorting : false\n");
+                builder.append("Blending : disable\n");
 
-            mBlendingInfoView.setText(builder.toString());
-            break;
-        default:
+                mBlendingInfoView.setText(builder.toString());
+                break;
+            default:
 
         }
 
