@@ -6,13 +6,12 @@ android {
 
     defaultConfig {
         applicationId "com.gomdev.shader"
-        minSdkVersion 18
+        minSdkVersion 14
         targetSdkVersion 21
 
         ndk {
             moduleName "gomdev"
             ldLibs "log", "android", "EGL", "GLESv2"
-            stl "stlport_shared"
         }
     }
 

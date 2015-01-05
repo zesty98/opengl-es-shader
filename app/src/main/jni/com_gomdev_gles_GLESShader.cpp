@@ -10,14 +10,13 @@
 #include <android/log.h>
 #include <android/asset_manager.h>
 
-#include <list>
-#include <string>
+#include <string.h>
 
 #define  LOG_TAG    "gomdev"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
-#define MAX_NUM_OF_CACHED_BINARY    10
+#define MAX_NUM_OF_CACHED_BINARY    5
 
 #define DEBUG
 
@@ -26,62 +25,148 @@ extern "C" {
 #endif
 
 typedef struct _BinaryInfo {
+    struct _BinaryInfo* next;
+    struct _BinaryInfo* prev;
     int length;
-    std::string* name;
+    char* name;
     void* binary;
 } BinaryInfo;
 
-static std::list<BinaryInfo*> sBinaryList;
-
-typedef std::list<BinaryInfo*>::iterator BinaryIter;
+static BinaryInfo* spRoot = NULL;
 
 static PFNGLGETPROGRAMBINARYOESPROC glGetProgramBinaryOES = NULL;
 static PFNGLPROGRAMBINARYOESPROC glProgramBinaryOES = NULL;
 
 static int sBinaryFormat = -1;
 
-void add(BinaryInfo* info) {
-    sBinaryList.push_back(info);
+void removeBinary(BinaryInfo* info) {
+    free(info->name);
+    free(info->binary);
+    free(info);
+}
 
-    if (sBinaryList.size() > MAX_NUM_OF_CACHED_BINARY) {
-        sBinaryList.pop_front();
+void removeBinaryFromList(BinaryInfo* info, bool needToDelete) {
+    BinaryInfo* prevInfo = info->prev;
+    BinaryInfo* nextInfo = info->next;
+
+    prevInfo->next = nextInfo;
+
+    if (nextInfo == NULL) {
+        if (prevInfo == spRoot) {
+            spRoot->prev = NULL;
+        } else {
+            spRoot->prev = prevInfo;
+        }
+    } else {
+        nextInfo->prev = prevInfo;
+    }
+
+    if (needToDelete == true) {
+        removeBinary(info);
     }
 }
 
-void removeBinary(BinaryIter iter) {
-    BinaryInfo* info = *iter;
-    delete info->name;
-    delete info->binary;
-    free(info);
-    sBinaryList.erase(iter);
+void dump(char* str) {
+    LOGI("dump() %s", str);
+
+    if (spRoot == NULL) {
+        return;
+    }
+
+    BinaryInfo* info = spRoot->next;
+
+    while(info != NULL) {
+        info = info->next;
+    }
 }
 
-BinaryIter find(std::string name) {
-    BinaryIter iter;
+char* copyFileName(const char* fileName) {
+    int length = strlen(fileName);
+    char* name = (char*) malloc(length + 1);
+    memset(name, '\0', length + 1);
+    strcpy(name, fileName);
 
-    BinaryInfo* info = NULL;
-    for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
-        info = *iter;
+    return name;
+}
 
-        if (name.compare(*info->name) == 0) {
-            return iter;
+int getNumOfBinaryInfo() {
+    int numOfBinaryInfo = 0;
+
+    if (spRoot == NULL) {
+        return 0;
+    }
+
+    BinaryInfo* info = spRoot->next;
+
+    while (info != NULL) {
+        ++numOfBinaryInfo;
+        info = info->next;
+    }
+
+    return numOfBinaryInfo;
+}
+
+void add(BinaryInfo* info) {
+    if (spRoot == NULL) {
+        spRoot = (BinaryInfo*) malloc(sizeof(BinaryInfo));
+        spRoot->next = NULL;
+        spRoot->prev = NULL;
+    }
+
+    if (spRoot->prev != NULL) {
+        BinaryInfo* lastNode = spRoot->prev;
+
+        lastNode->next = info;
+        info->prev = lastNode;
+        info->next = NULL;
+        spRoot->prev = info;
+    } else {
+        spRoot->prev = info;
+        spRoot->next = info;
+
+        info->next = NULL;
+        info->prev = spRoot;
+    }
+
+    int numOfBinaryInfo = getNumOfBinaryInfo();
+    if (numOfBinaryInfo > MAX_NUM_OF_CACHED_BINARY) {
+        if (spRoot->next != NULL) {
+            removeBinaryFromList(spRoot->next, true);
         }
     }
+    numOfBinaryInfo = getNumOfBinaryInfo();
+}
 
-    return sBinaryList.end();
+BinaryInfo* find(char* name) {
+    if (spRoot == NULL) {
+        return NULL;
+    }
+
+    BinaryInfo* info = spRoot->next;
+
+    while(info != NULL) {
+        if (strcmp(name, info->name) == 0) {
+            return info;
+        }
+        info = info->next;
+    }
+
+    return NULL;
 }
 
 void clear() {
-    BinaryIter iter;
-    for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
-        BinaryInfo* info = *iter;
-        delete info->name;
-        delete info->binary;
-        delete info;
-    }
+    BinaryInfo* info = spRoot->next;
+    BinaryInfo* temp = NULL;
 
-    sBinaryList.clear();
+    do {
+        temp = info->next;
+        removeBinary(info);
+    } while(temp != NULL);
+
+    free(spRoot);
 }
+
+
 
 BinaryInfo* readFile(char* fileName) {
     FILE *fp = fopen(fileName, "rb");
@@ -113,13 +198,13 @@ BinaryInfo* readFile(char* fileName) {
 
     fclose(fp);
 
-    std::string name = fileName;
+    char* name = copyFileName(fileName);
 
     BinaryInfo* binaryInfo = (BinaryInfo*) malloc(sizeof(BinaryInfo));
     if (binaryInfo != NULL) {
         binaryInfo->length = length;
         binaryInfo->binary = binary;
-        binaryInfo->name = new std::string(fileName);
+        binaryInfo->name = name;
     }
 
     return binaryInfo;
@@ -134,16 +219,7 @@ void checkGLError(char* str) {
 #endif
 }
 
-void dump(char* str) {
-    LOGI("dump() %s", str);
 
-    BinaryInfo* info = NULL;
-    BinaryIter iter;
-    for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
-        info = *iter;
-        LOGI("\tName=%s BinaryInfo=%p", (info->name)->c_str(), info);
-    }
-}
 
 jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderCompileLog(
         JNIEnv * env, jobject obj, jint shader) {
@@ -208,15 +284,16 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
         fclose(outfile);
 
         // if binary is already cached, remove cached binary
-        std::string name = fileName;
-        BinaryIter iter = find(name);
-        if (iter != sBinaryList.end()) {
-            removeBinary(iter);
+        char* name = copyFileName(fileName);
+
+        BinaryInfo* info = find(name);
+        if (info != NULL) {
+            removeBinaryFromList(info, true);
         }
 
         BinaryInfo* binaryInfo = (BinaryInfo*)malloc(sizeof(BinaryInfo));
         if (binaryInfo != NULL ) {
-            binaryInfo->name = new std::string(fileName);
+            binaryInfo->name = name;
             binaryInfo->length = binaryLength;
             binaryInfo->binary = binary;
 
@@ -242,15 +319,12 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
 
     if(fileName != NULL)
     {
-        BinaryInfo* binaryInfo = NULL;
-        std::string name = fileName;
-        BinaryIter iter = find(name);
-        if(iter != sBinaryList.end()) {
+        BinaryInfo* binaryInfo = find(fileName);
+        if(binaryInfo != NULL) {
 #ifdef DEBUG
             LOGI("Load() cache hit!!! - %s", fileName);
 #endif
-            binaryInfo = *iter;
-            sBinaryList.erase(iter);
+            removeBinaryFromList(binaryInfo, false);
             add(binaryInfo);
         } else {
 #ifdef DEBUG
