@@ -1,15 +1,17 @@
+#define MAX_LIGHT_NUM 2
+
 precision mediump float;
 
 varying vec2 vTexCoord;
 varying vec3 vNormal;
 varying vec4 vPositionES;
-varying vec4 vLightPosES[8];
+varying vec4 vLightPosES[MAX_LIGHT_NUM];
 
 uniform sampler2D uTexture;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform lowp int uLightState[8];
+uniform lowp int uLightState[MAX_LIGHT_NUM];
 
 struct LightInfo {
     highp vec4 ambient;
@@ -41,7 +43,7 @@ vec4 calcLightColor() {
 
     vec4 lightColor = sceneAmbient * materialInfo.ambient;
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < MAX_LIGHT_NUM; i++) {
         if (uLightState[i] == 1) {
             vec3 lightDirES;
             if (vLightPosES[i].w == 0.0) {

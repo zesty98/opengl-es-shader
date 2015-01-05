@@ -1,5 +1,7 @@
 #version 300 es
 
+#define MAX_LIGHT_NUM 2
+
 precision mediump float;
 
 in vec4 vColor;
@@ -12,7 +14,7 @@ layout( location = 0) out vec4 fragColor;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform lowp int uLightState[8];
+uniform lowp int uLightState[MAX_LIGHT_NUM];
 
 struct LightInfo {
     highp vec4 ambient;

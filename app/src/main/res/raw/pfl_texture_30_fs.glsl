@@ -1,5 +1,7 @@
 #version 300 es
 
+#define MAX_LIGHT_NUM 2
+
 precision mediump float;
 
 in vec2 vTexCoord;
@@ -14,7 +16,7 @@ uniform sampler2D uTexture;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform lowp int uLightState[8];
+uniform lowp int uLightState[MAX_LIGHT_NUM];
 
 struct LightInfo {
     highp vec4 ambient;
