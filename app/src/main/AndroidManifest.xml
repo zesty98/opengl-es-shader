@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gomdev.shader"
-    android:versionCode="113"
-    android:versionName="1.13" >
+    package="com.gomdev.shader">
     
     <supports-screens 
         android:smallScreens="true"
@@ -10,12 +8,8 @@
         android:largeScreens="true"
         android:xlargeScreens="true" />
 
-    <uses-sdk
-        android:minSdkVersion="18"
-        android:targetSdkVersion="21" />
-
     <uses-feature
-        android:glEsVersion="0x00030000"
+        android:glEsVersion="0x00020000"
         android:required="true" />
 
     <uses-permission

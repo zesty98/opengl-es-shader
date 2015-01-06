@@ -50,9 +50,6 @@ public class DeviceInfoFragment extends MainFragment {
 
         ShaderContext shaderContext = ShaderContext.getInstance();
 
-        GLESConfig.Version version = GLESUtils.getGLESVersion(getActivity());
-        shaderContext.setSupportedGLESVersion(version);
-
         // Hardware
         TextView hardwareView = (TextView) mLayout.findViewById(R.id.hardware);
 

@@ -18,6 +18,9 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESUtils;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -95,6 +98,11 @@ public class MainActivity extends FragmentActivity {
         }
 
         ShaderContext.newInstance();
+
+        ShaderContext shaderContext = ShaderContext.getInstance();
+
+        GLESConfig.Version version = GLESUtils.getGLESVersion(this);
+        shaderContext.setSupportedGLESVersion(version);
 
         setupHardwareInfo();
 

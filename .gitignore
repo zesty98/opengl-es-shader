@@ -1,8 +1,11 @@
 build/
 **/.DS_Store
 app/build/
+app/src/main/obj/
 local.properties
 .idea/
 .gradle/
 import-summary.txt
 app/src/main/java/com/gomdev/gles/
+*.apk
+*.txt

@@ -21,7 +21,7 @@ import com.gomdev.gles.GLESUtils;
 import java.util.ArrayList;
 
 public class OptionsFragment extends MainFragment {
-    static final String CLASS = "ShaderOptionsDialog";
+    static final String CLASS = "OptionsFragment";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 

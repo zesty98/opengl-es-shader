@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.opengl.GLES20;
 import android.support.v4.view.GestureDetectorCompat;
 import android.text.InputType;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -39,10 +38,7 @@ import com.gomdev.shader.ShaderUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,14 +51,23 @@ public class CompressedTextureRenderer extends SampleRenderer {
         NONE,
         ORIGINAL,
         ETC1,
-        ATC,
-        ETC2
+        ATC_RGB,
+        ATC_RGBA_EXPLICIT,
+        ATC_RGBA_INTERPOLATED,
+        ETC2_RGB,
+        ETC2_RGB_PUNCHTHROUGHT_ALPHA,
+        ETC2_RGBA,
+        S3TC_DXT1_RGBA,
+        S3TC_DXT3_RGBA,
+        S3TC_DXT5_RGBA
     }
 
     class TextureInfo {
         private final TextureType mType;
         private final String mInfo;
         private GLESTexture mTexture;
+        private int mResID;
+        private int mInternalFormat;
 
         TextureInfo(TextureType type, String info) {
             mType = type;
@@ -84,6 +89,22 @@ public class CompressedTextureRenderer extends SampleRenderer {
         GLESTexture getTexture() {
             return mTexture;
         }
+
+        void setResID(int resID) {
+            mResID = resID;
+        }
+
+        int getResID() {
+            return mResID;
+        }
+
+        void setInternalFormat(int internalFormat) {
+            mInternalFormat = internalFormat;
+        }
+
+        int getInternalFormat() {
+            return mInternalFormat;
+        }
     }
 
     private GLESSceneManager mSM = null;
@@ -95,9 +116,6 @@ public class CompressedTextureRenderer extends SampleRenderer {
 
     private GLESTexture mBGTexture = null;
     private GLESTexture mOriginalTexture = null;
-    private GLESTexture mATCTexture = null;
-    private GLESTexture mETC1Texture = null;
-    private GLESTexture mETC2Texture = null;
 
     private GestureDetectorCompat mGestureDetector = null;
 
@@ -120,39 +138,85 @@ public class CompressedTextureRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
-        setupTextureInfos();
+        setupInfoView();
 
         createScene();
 
         mGestureDetector = new GestureDetectorCompat(context, mGestureListener);
-
-        setupInfoView();
     }
 
     private void setupTextureInfos() {
         mTextureInfos.clear();
 
-        TextureInfo info = new TextureInfo(TextureType.NONE,"BG");
+        TextureInfo info = new TextureInfo(TextureType.NONE, "BG");
         mTextureInfos.put(TextureType.NONE, info);
 
-        info = new TextureInfo(TextureType.ORIGINAL, "BG + Original Texture");
+        info = new TextureInfo(TextureType.ORIGINAL, "BG + Original");
         mTextureInfos.put(TextureType.ORIGINAL, info);
 
         boolean isSupport = GLESUtils.checkGLESExtension("GL_OES_compressed_ETC1_RGB8_texture");
         if (isSupport == true) {
-            info = new TextureInfo(TextureType.ETC1, "BG + Compressed Texture ETC1");
+            info = new TextureInfo(TextureType.ETC1, "BG + ETC1");
+            info.setResID(R.raw.transparent_etc1_rgb);
+            info.setInternalFormat(GLESConfig.GL_ETC1_RGB8_OES);
+
             mTextureInfos.put(TextureType.ETC1, info);
         }
 
         isSupport = GLESUtils.checkGLESExtension("GL_AMD_compressed_ATC_texture");
         if (isSupport == true) {
-            info = new TextureInfo(TextureType.ATC, "BG + Compressed Texture ATC");
-            mTextureInfos.put(TextureType.ATC, info);
+            info = new TextureInfo(TextureType.ATC_RGB, "BG + ATC_RGB");
+            info.setResID(R.raw.transparent_atc_rgb);
+            info.setInternalFormat(GLESConfig.GL_ATC_RGB_AMD);
+            mTextureInfos.put(TextureType.ATC_RGB, info);
+
+            info = new TextureInfo(TextureType.ATC_RGBA_EXPLICIT, "BG + ATC_RGBA_EXPLICIT");
+            info.setResID(R.raw.transparent_atc_rgba_e);
+            info.setInternalFormat(GLESConfig.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD);
+            mTextureInfos.put(TextureType.ATC_RGBA_EXPLICIT, info);
+
+            info = new TextureInfo(TextureType.ATC_RGBA_INTERPOLATED, "BG + ATC_RGBA_INTERPOLATED");
+            info.setResID(R.raw.transparent_atc_rgba_i);
+            info.setInternalFormat(GLESConfig.GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD);
+            mTextureInfos.put(TextureType.ATC_RGBA_INTERPOLATED, info);
+        }
+
+        isSupport = GLESUtils.checkGLESExtension("GL_EXT_texture_compression_dxt1");
+        if (isSupport == true) {
+            info = new TextureInfo(TextureType.S3TC_DXT1_RGBA, "BG + S3TC_DXT1_RGBA");
+            info.setResID(R.raw.transparent_s3tc_dxt1_rgba);
+            info.setInternalFormat(GLESConfig.GL_COMPRESSED_RGBA_S3TC_DXT1_EXT);
+            mTextureInfos.put(TextureType.S3TC_DXT1_RGBA, info);
+        }
+
+        isSupport = GLESUtils.checkGLESExtension("GL_EXT_texture_compression_s3tc");
+        if (isSupport == true) {
+            info = new TextureInfo(TextureType.S3TC_DXT3_RGBA, "BG + S3TC_DXT3_RGBA");
+            info.setResID(R.raw.transparent_s3tc_dxt3_rgba);
+            info.setInternalFormat(GLESConfig.GL_COMPRESSED_RGBA_S3TC_DXT3_EXT);
+            mTextureInfos.put(TextureType.S3TC_DXT3_RGBA, info);
+
+            info = new TextureInfo(TextureType.S3TC_DXT5_RGBA, "BG + S3TC_DXT5_RGBA");
+            info.setResID(R.raw.transparent_s3tc_dxt5_rgba);
+            info.setInternalFormat(GLESConfig.GL_COMPRESSED_RGBA_S3TC_DXT5_EXT);
+            mTextureInfos.put(TextureType.S3TC_DXT5_RGBA, info);
         }
 
         if (mVersion == Version.GLES_30) {
-            info = new TextureInfo(TextureType.ETC2, "BG + Compressed Texture ETC2");
-            mTextureInfos.put(TextureType.ETC2, info);
+            info = new TextureInfo(TextureType.ETC2_RGB, "BG + ETC2_RGB");
+            info.setResID(R.raw.transparent_etc2_rgb8);
+            info.setInternalFormat(GLESConfig.GL_COMPRESSED_RGB8_ETC2);
+            mTextureInfos.put(TextureType.ETC2_RGB, info);
+
+            info = new TextureInfo(TextureType.ETC2_RGB_PUNCHTHROUGHT_ALPHA, "BG + ETC2_RGB8_PUNCHTHROUGH_ALPHA1");
+            info.setResID(R.raw.transparent_etc2_rgb8_a1);
+            info.setInternalFormat(GLESConfig.GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2);
+            mTextureInfos.put(TextureType.ETC2_RGB_PUNCHTHROUGHT_ALPHA, info);
+
+            info = new TextureInfo(TextureType.ETC2_RGBA, "BG + ETC2_RGBA");
+            info.setResID(R.raw.transparent_etc2_rgba);
+            info.setInternalFormat(GLESConfig.GL_COMPRESSED_RGBA8_ETC2_EAC);
+            mTextureInfos.put(TextureType.ETC2_RGBA, info);
         }
 
         int size = mTextureInfos.size();
@@ -173,7 +237,9 @@ public class CompressedTextureRenderer extends SampleRenderer {
                 | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         mInfoView.setTextColor(Color.WHITE);
         mInfoView.setVisibility(View.VISIBLE);
-        mInfoView.setText(mTextureInfos.get(TextureType.NONE).getInfo());
+        int margin = mContext.getResources().getDimensionPixelSize(R.dimen.textview_margin);
+        mInfoView.setPadding(margin, margin, margin, margin);
+        mInfoView.setText("BG");
 
         mIndex = 0;
     }
@@ -273,6 +339,8 @@ public class CompressedTextureRenderer extends SampleRenderer {
     protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
+        setupTextureInfos();
+
         createTextures();
 
         mObject.setShader(mShader);
@@ -289,6 +357,7 @@ public class CompressedTextureRenderer extends SampleRenderer {
                     GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
             mBGTexture = builder.load(bitmap);
         }
+
         {
             Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.transparent);
             GLESTexture.Builder builder = new GLESTexture.Builder(
@@ -298,8 +367,11 @@ public class CompressedTextureRenderer extends SampleRenderer {
             textureInfo.setTexture(mOriginalTexture);
         }
 
-        if (mTextureInfos.get(TextureType.ATC) != null) {
-            InputStream inputStream = mContext.getResources().openRawResource(R.raw.transparent_atitc);
+        for (int i = 2; i < mTextureTypes.length; i++) {
+            TextureType type = mTextureTypes[i];
+            TextureInfo info = mTextureInfos.get(type);
+
+            InputStream inputStream = mContext.getResources().openRawResource(info.getResID());
             GLESCompressedTextureInfo compressedTextureInfo = null;
             try {
                 compressedTextureInfo = GLESDDSDecoder.decode(inputStream);
@@ -308,45 +380,11 @@ public class CompressedTextureRenderer extends SampleRenderer {
             }
             GLESTexture.Builder builder = new GLESTexture.Builder(
                     GLES20.GL_TEXTURE_2D, compressedTextureInfo.getWidth(), compressedTextureInfo.getHeight())
-                    .setInternalFormat(GLESConfig.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD);
-            mATCTexture = builder.load(compressedTextureInfo.getData());
+                    .setInternalFormat(info.getInternalFormat());
+            GLESTexture texture = builder.load(compressedTextureInfo.getData());
 
-            TextureInfo textureInfo = mTextureInfos.get(TextureType.ATC);
-            textureInfo.setTexture(mATCTexture);
-        }
-
-        if (mTextureInfos.get(TextureType.ETC1) != null) {
-            InputStream inputStream = mContext.getResources().openRawResource(R.raw.transparent_etc1);
-            GLESCompressedTextureInfo compressedTextureInfo = null;
-            try {
-                compressedTextureInfo = GLESDDSDecoder.decode(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            GLESTexture.Builder builder = new GLESTexture.Builder(
-                    GLES20.GL_TEXTURE_2D, compressedTextureInfo.getWidth(), compressedTextureInfo.getHeight())
-                    .setInternalFormat(GLESConfig.GL_ETC1_RGB8_OES);
-            mETC1Texture = builder.load(compressedTextureInfo.getData());
-
-            TextureInfo textureInfo = mTextureInfos.get(TextureType.ETC1);
-            textureInfo.setTexture(mETC1Texture);
-        }
-
-        if (mVersion == Version.GLES_30) {
-            InputStream inputStream = mContext.getResources().openRawResource(R.raw.transparent_etc2);
-            GLESCompressedTextureInfo compressedTextureInfo = null;
-            try {
-                compressedTextureInfo = GLESDDSDecoder.decode(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            GLESTexture.Builder builder = new GLESTexture.Builder(
-                    GLES20.GL_TEXTURE_2D, compressedTextureInfo.getWidth(), compressedTextureInfo.getHeight())
-                    .setInternalFormat(GLESConfig.GL_COMPRESSED_RGBA8_ETC2_EAC);
-            mETC2Texture = builder.load(compressedTextureInfo.getData());
-
-            TextureInfo textureInfo = mTextureInfos.get(TextureType.ETC2);
-            textureInfo.setTexture(mETC2Texture);
+            TextureInfo textureInfo = mTextureInfos.get(type);
+            textureInfo.setTexture(texture);
         }
     }
 

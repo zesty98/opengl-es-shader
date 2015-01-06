@@ -1,5 +1,7 @@
 package com.gomdev.shader;
 
+import android.util.Log;
+
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
