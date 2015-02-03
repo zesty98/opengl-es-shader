@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
+import com.gomdev.shader.coloredPointAdv.ColoredPointAdvActivity;
 import com.gomdev.shader.coloredPointAdv.ColoredPointAdvConfig;
 import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
 import com.gomdev.shader.coloredPointBlending.ColoredPointBlendingConfig;
@@ -32,6 +33,8 @@ import com.gomdev.shader.texturedCube.TexturedCubeConfig;
 import com.gomdev.shader.texturedPointAdv.TexturedPointAdvConfig;
 import com.gomdev.shader.texturedPointBasic.TexturedPointBasicConfig;
 import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
+import com.gomdev.shader.transformFeedback.TransformFeedbackActivity;
+import com.gomdev.shader.transformFeedback.TransformFeedbackConfig;
 
 import java.util.ArrayList;
 
@@ -84,6 +87,7 @@ public class SampleList {
         setupIR(version);
         setupIR2(version);
         setupCompressedTexture(version);
+        setupTransformFeedback(version);
         // setupWhitehole(version);
 
         if (DEBUG) {
@@ -348,7 +352,7 @@ public class SampleList {
         info.mSampleName = ColoredPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
-                com.gomdev.shader.coloredPointAdv.ColoredPointAdvActivity.class);
+                ColoredPointAdvActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point2_color_20_vs,
@@ -719,6 +723,37 @@ public class SampleList {
             info.mShaderTitle = new String[]{
                     "ComressedTexture 30 VS",
                     "ComressedTexture 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupTransformFeedback(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = TransformFeedbackConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                mContext,
+                TransformFeedbackActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[]{
+                    R.raw.transformfeedback_20_vs,
+                    R.raw.transformfeedback_20_fs,
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Transform feedback 20 VS",
+                    "Transform feedback 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[]{
+                    R.raw.transformfeedback_30_vs,
+                    R.raw.transformfeedback_30_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Transform feedback 30 VS",
+                    "Transform feedback 30 FS",
             };
         }
 

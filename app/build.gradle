@@ -8,8 +8,8 @@ android {
         applicationId "com.gomdev.shader"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 114
-        versionName "1.14"
+        versionCode 115
+        versionName "1.15"
 
         sourceSets.main {
             jniLibs.srcDir 'src/main/libs'
