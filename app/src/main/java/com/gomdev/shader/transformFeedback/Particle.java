@@ -47,16 +47,16 @@ class Particle extends GLESParticle {
 
     @Override
     public void setVelocityX(float vel) {
-        mVelocity.mX = vel;
+        mVelocity.setX(vel);
 
-        if (mVelocity.mX != 1.0f) {
-            mNormalizedDuration = mDistance / mVelocity.mX;
+        if (mVelocity.getX() != 1.0f) {
+            mNormalizedDuration = mDistance / mVelocity.getX();
         }
     }
 
     @Override
     public float getVelocityX() {
-        return mVelocity.mX;
+        return mVelocity.getX();
     }
 
     @Override

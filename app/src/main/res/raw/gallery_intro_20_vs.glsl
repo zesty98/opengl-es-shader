@@ -1,4 +1,6 @@
-varying vec4 vColor;
+precision highp float;
+
+varying vec2 vTexCoord;
 
 attribute vec4 aPosition;
 attribute vec2 aTexCoord;
@@ -7,14 +9,12 @@ uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
 uniform highp mat4 uVMatrix;
 
-uniform lowp float uPointSize;
-
-uniform sampler2D uTexture;
+uniform highp float uPointSize;
 
 void main() {
     vec4 pos = uPMatrix * uVMatrix * uMMatrix * aPosition;
 
-    vColor = texture2D(uTexture, aTexCoord);
+    vTexCoord = aTexCoord;
 
     gl_PointSize = uPointSize;
     gl_Position = pos;

@@ -132,7 +132,7 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
             GLESParticle particle = mParticles.get(i);
             GLESVector3 velocity = particle.getVelocity();
 
-            x = particle.mX + normalizedElapsedTime * velocity.mX;
+            x = particle.mX + normalizedElapsedTime * velocity.getX();
             if (x > mScreenRatio) {
                 x -= mScreenRatio * 2f;
             } else if (x < -mScreenRatio) {
@@ -140,7 +140,7 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
             }
             particle.mX = x;
 
-            y = particle.mY - normalizedElapsedTime * velocity.mY;
+            y = particle.mY - normalizedElapsedTime * velocity.getY();
             if (y < -1f) {
                 y += 2f;
             }
@@ -300,7 +300,7 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
     }
 
     @Override
-    public void setupVAO(GLESObject object) {
+    public void setupVAO(GLESShader shader, GLESVertexInfo vertexInfo) {
 
     }
 

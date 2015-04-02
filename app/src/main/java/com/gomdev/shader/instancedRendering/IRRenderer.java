@@ -1,9 +1,11 @@
 package com.gomdev.shader.instancedRendering;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
+import android.os.Build;
 import android.util.Log;
 
 import com.gomdev.gles.GLESCamera;
@@ -31,6 +33,7 @@ import com.gomdev.shader.ShaderUtils;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class IRRenderer extends SampleRenderer implements GLESRendererListener {
     private static final String CLASS = "IRRenderer";
     private static final String TAG = IRConfig.TAG + "_" + CLASS;
@@ -184,10 +187,10 @@ public class IRRenderer extends SampleRenderer implements GLESRendererListener {
                 "uNormalMatrix");
         int location = GLES20.glGetUniformLocation(program, "uLightPos");
         GLES20.glUniform4f(location,
-                mLightPos.mX,
-                mLightPos.mY,
-                mLightPos.mZ,
-                mLightPos.mW);
+                mLightPos.getX(),
+                mLightPos.getY(),
+                mLightPos.getZ(),
+                mLightPos.getW());
         location = GLES20.glGetUniformLocation(program, "uLightState");
         int[] lightState = new int[]{
                 1,
@@ -282,27 +285,20 @@ public class IRRenderer extends SampleRenderer implements GLESRendererListener {
     }
 
     @Override
-    public void setupVAO(GLESObject object) {
+    public void setupVAO(GLESShader shader, GLESVertexInfo vertexInfo) {
         if (mVersion == Version.GLES_20) {
             return;
         }
 
         GLES30.glEnableVertexAttribArray(USER_ATTRIB_LOCATION);
 
-        boolean useVBO = object.useVBO();
-        if (useVBO == true) {
-            GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                    mVBOID);
-            GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
-                    NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
-                    NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                    0);
-        } else {
-            GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
-                    NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
-                    NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                    mTransBuffer);
-        }
+        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
+                mVBOID);
+        GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
+                NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
+                NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
+                0);
+
 
         GLES30.glVertexAttribDivisor(USER_ATTRIB_LOCATION, 1);
     }

@@ -7,5 +7,6 @@
     <color name="selectedTextColor">#FFFF</color>
     <color name="defaultTextColor">#FCCC</color>
     <color name="selectedIndicatorColor">#FFFF</color>
+    <color name="galleryIntroTextColor">#FF487CF1</color>
 
 </resources>

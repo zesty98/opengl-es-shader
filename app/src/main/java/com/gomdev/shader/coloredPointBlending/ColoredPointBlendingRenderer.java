@@ -536,7 +536,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
     }
 
     @Override
-    public void setupVAO(GLESObject object) {
+    public void setupVAO(GLESShader shader, GLESVertexInfo vertexInfo) {
 
     }
 

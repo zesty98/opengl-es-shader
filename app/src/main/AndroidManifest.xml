@@ -78,7 +78,19 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.gomdev.shader.icon.IconActivity"
+            android:name=".shaderIcon.ShaderIconActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".galleryIcon.GalleryIconActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".galleryIntro.GalleryIntroActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
@@ -181,6 +193,12 @@
         </activity>
         <activity
             android:name="com.gomdev.shader.transformFeedback.TransformFeedbackActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.gomdev.shader.textRendering.TextRenderingActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >

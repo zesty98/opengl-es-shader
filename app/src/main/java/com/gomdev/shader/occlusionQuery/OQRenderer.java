@@ -226,10 +226,10 @@ public class OQRenderer extends SampleRenderer {
         int location = GLES20.glGetUniformLocation(program,
                 "uLightPos");
         GLES20.glUniform4f(location,
-                mLightPos.mX,
-                mLightPos.mY,
-                mLightPos.mZ,
-                mLightPos.mW);
+                mLightPos.getX(),
+                mLightPos.getY(),
+                mLightPos.getZ(),
+                mLightPos.getW());
     }
 
     @Override

@@ -2,5 +2,6 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="textview_margin">3dp</dimen>
+    <dimen name="intro_text_size">50dp</dimen>
 
 </resources>

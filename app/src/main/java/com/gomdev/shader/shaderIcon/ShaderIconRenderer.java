@@ -1,4 +1,4 @@
-package com.gomdev.shader.icon;
+package com.gomdev.shader.shaderIcon;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,10 +27,10 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
-public class IconRenderer extends SampleRenderer {
-    private static final String CLASS = "IconRenderer";
-    private static final String TAG = IconConfig.TAG + "_" + CLASS;
-    private static final boolean DEBUG = IconConfig.DEBUG;
+public class ShaderIconRenderer extends SampleRenderer {
+    private static final String CLASS = "ShaderIconRenderer";
+    private static final String TAG = ShaderIconConfig.TAG + "_" + CLASS;
+    private static final boolean DEBUG = ShaderIconConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
 
@@ -62,7 +62,7 @@ public class IconRenderer extends SampleRenderer {
 
     private float mPreTranslate = 0f;
 
-    public IconRenderer(Context context) {
+    public ShaderIconRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gomdev.shader.icon;
+package com.gomdev.shader.shaderIcon;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -23,18 +23,18 @@ import android.view.MotionEvent;
 import com.gomdev.shader.R;
 import com.gomdev.shader.SampleActivity;
 
-public class IconActivity extends SampleActivity {
-    static final String CLASS = "IconActivity";
-    static final String TAG = IconConfig.TAG + "_" + CLASS;
-    static final boolean DEBUG = IconConfig.DEBUG;
+public class ShaderIconActivity extends SampleActivity {
+    static final String CLASS = "ShaderIconActivity";
+    static final String TAG = ShaderIconConfig.TAG + "_" + CLASS;
+    static final boolean DEBUG = ShaderIconConfig.DEBUG;
 
-    private IconRenderer mRenderer;
+    private ShaderIconRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mRenderer = new IconRenderer(this);
+        mRenderer = new ShaderIconRenderer(this);
         mView = (GLSurfaceView) findViewById(R.id.sample_surfaceview);
         mRenderer.setSurfaceView(mView);
 
@@ -70,13 +70,13 @@ public class IconActivity extends SampleActivity {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                ((IconRenderer) mRenderer).touchDown(x, y);
+                ((ShaderIconRenderer) mRenderer).touchDown(x, y);
                 break;
             case MotionEvent.ACTION_UP:
-                ((IconRenderer) mRenderer).touchUp(x, y);
+                ((ShaderIconRenderer) mRenderer).touchUp(x, y);
                 break;
             case MotionEvent.ACTION_MOVE:
-                ((IconRenderer) mRenderer).touchMove(x, y);
+                ((ShaderIconRenderer) mRenderer).touchMove(x, y);
                 break;
         }
 

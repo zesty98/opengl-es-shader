@@ -253,8 +253,8 @@ public class PFLRenderer extends SampleRenderer {
 
                 @Override
                 public void onAnimation(GLESVector3 vector) {
-                    float x = (float) (Math.cos(vector.mX) * mRadius);
-                    float y = (float) (Math.sin(vector.mX) * mRadius);
+                    float x = (float) (Math.cos(vector.getX()) * mRadius);
+                    float y = (float) (Math.sin(vector.getX()) * mRadius);
                     float z = 0f;
                     mCubeLight.set(x, y, z, 0.0f);
                 }
@@ -297,10 +297,10 @@ public class PFLRenderer extends SampleRenderer {
                     normalMatrix, 0);
 
             GLES20.glUniform4f(mLightPosHandle,
-                    mCubeLight.mX,
-                    mCubeLight.mY,
-                    mCubeLight.mZ,
-                    mCubeLight.mW);
+                    mCubeLight.getX(),
+                    mCubeLight.getY(),
+                    mCubeLight.getZ(),
+                    mCubeLight.getW());
 
             int[] lightState = new int[]{
                     1,
@@ -324,7 +324,7 @@ public class PFLRenderer extends SampleRenderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.setTranslate(mCubeLight.mX, mCubeLight.mY, mCubeLight.mZ);
+            transform.setTranslate(mCubeLight.getX(), mCubeLight.getY(), mCubeLight.getZ());
 
         }
 
@@ -353,10 +353,10 @@ public class PFLRenderer extends SampleRenderer {
                     normalMatrix, 0);
 
             GLES20.glUniform4f(mLightPosHandle,
-                    mLightLight.mX,
-                    mLightLight.mY,
-                    mLightLight.mZ,
-                    mLightLight.mW);
+                    mLightLight.getX(),
+                    mLightLight.getY(),
+                    mLightLight.getZ(),
+                    mLightLight.getW());
 
             int[] lightState = new int[]{
                     1,

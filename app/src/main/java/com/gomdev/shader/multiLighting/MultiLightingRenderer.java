@@ -292,17 +292,17 @@ public class MultiLightingRenderer extends SampleRenderer {
 
                 @Override
                 public void onAnimation(GLESVector3 vector) {
-                    mDegree = (float) Math.toDegrees(vector.mX);
+                    mDegree = (float) Math.toDegrees(vector.getX());
 
-                    float x = (float) Math.cos(vector.mX) * mLight1Radius;
-                    float y = (float) Math.sin(vector.mX) * mLight1Radius;
+                    float x = (float) Math.cos(vector.getX()) * mLight1Radius;
+                    float y = (float) Math.sin(vector.getX()) * mLight1Radius;
                     float z = 0f;
                     float w = 1f;
 
                     mLight1Pos.set(x, y, z, w);
 
-                    x = (float) Math.cos(vector.mX * 2f) * mLight2Radius + x;
-                    y = (float) Math.sin(vector.mX * 2f) * mLight2Radius + y;
+                    x = (float) Math.cos(vector.getX() * 2f) * mLight2Radius + x;
+                    y = (float) Math.sin(vector.getX() * 2f) * mLight2Radius + y;
                     z = 0f;
                     w = 1f;
 
@@ -348,14 +348,14 @@ public class MultiLightingRenderer extends SampleRenderer {
 
             if (mVersion == Version.GLES_20) {
                 float[] lightPos = new float[]{
-                        mLight1Pos.mX,
-                        mLight1Pos.mY,
-                        mLight1Pos.mZ,
-                        mLight1Pos.mW,
-                        mLight2Pos.mX,
-                        mLight2Pos.mY,
-                        mLight2Pos.mZ,
-                        mLight2Pos.mW,
+                        mLight1Pos.getX(),
+                        mLight1Pos.getY(),
+                        mLight1Pos.getZ(),
+                        mLight1Pos.getW(),
+                        mLight2Pos.getX(),
+                        mLight2Pos.getY(),
+                        mLight2Pos.getZ(),
+                        mLight2Pos.getW(),
                 };
                 GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
@@ -371,10 +371,10 @@ public class MultiLightingRenderer extends SampleRenderer {
                 };
                 GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
             } else {
-                GLES30.glUniform4f(mLightPos1Handle, mLight1Pos.mX,
-                        mLight1Pos.mY, mLight1Pos.mZ, mLight1Pos.mW);
-                GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
-                        mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
+                GLES30.glUniform4f(mLightPos1Handle, mLight1Pos.getX(),
+                        mLight1Pos.getY(), mLight1Pos.getZ(), mLight1Pos.getW());
+                GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.getX(),
+                        mLight2Pos.getY(), mLight2Pos.getZ(), mLight2Pos.getW());
 
                 int[] lightState = new int[]{
                         1,
@@ -418,14 +418,14 @@ public class MultiLightingRenderer extends SampleRenderer {
 
             if (mVersion == Version.GLES_20) {
                 float[] lightPos = new float[]{
-                        mLight1Pos.mX,
-                        mLight1Pos.mY,
-                        mLight1Pos.mZ,
-                        mLight1Pos.mW,
-                        mLight2Pos.mX,
-                        mLight2Pos.mY,
-                        mLight2Pos.mZ,
-                        mLight2Pos.mW,
+                        mLight1Pos.getX(),
+                        mLight1Pos.getY(),
+                        mLight1Pos.getZ(),
+                        mLight1Pos.getW(),
+                        mLight2Pos.getX(),
+                        mLight2Pos.getY(),
+                        mLight2Pos.getZ(),
+                        mLight2Pos.getW(),
                 };
                 GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
@@ -441,10 +441,10 @@ public class MultiLightingRenderer extends SampleRenderer {
                 };
                 GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
             } else {
-                // GLES30.glUniform4f(mLightPos1Handle, mLightPos.mX,
-                // mLightPos.mY, mLightPos.mZ, mLightPos.mW);
-                GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
-                        mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
+                // GLES30.glUniform4f(mLightPos1Handle, mLightPos.getX(),
+                // mLightPos.getY(), mLightPos.getZ(), mLightPos.getW());
+                GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.getX(),
+                        mLight2Pos.getY(), mLight2Pos.getZ(), mLight2Pos.getW());
 
                 int[] lightState = new int[]{
                         0,
@@ -493,14 +493,14 @@ public class MultiLightingRenderer extends SampleRenderer {
 
             if (mVersion == Version.GLES_20) {
                 float[] lightPos = new float[]{
-                        mLight1Pos.mX,
-                        mLight1Pos.mY,
-                        mLight1Pos.mZ,
-                        mLight1Pos.mW,
-                        mLight2Pos.mX,
-                        mLight2Pos.mY,
-                        mLight2Pos.mZ,
-                        mLight2Pos.mW
+                        mLight1Pos.getX(),
+                        mLight1Pos.getY(),
+                        mLight1Pos.getZ(),
+                        mLight1Pos.getW(),
+                        mLight2Pos.getX(),
+                        mLight2Pos.getY(),
+                        mLight2Pos.getZ(),
+                        mLight2Pos.getW()
                 };
                 GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
@@ -517,10 +517,10 @@ public class MultiLightingRenderer extends SampleRenderer {
 
                 GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
             } else {
-                GLES30.glUniform4f(mLightPos1Handle, mLight1Pos.mX,
-                        mLight1Pos.mY, mLight1Pos.mZ, mLight1Pos.mW);
-                // GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
-                // mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
+                GLES30.glUniform4f(mLightPos1Handle, mLight1Pos.getX(),
+                        mLight1Pos.getY(), mLight1Pos.getZ(), mLight1Pos.getW());
+                // GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.getX(),
+                // mLight2Pos.getY(), mLight2Pos.getZ(), mLight2Pos.getW());
 
                 int[] lightState = new int[]{
                         1,

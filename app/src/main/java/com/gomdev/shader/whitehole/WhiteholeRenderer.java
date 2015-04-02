@@ -259,7 +259,7 @@ public class WhiteholeRenderer extends SampleRenderer {
 
             @Override
             public void onAnimation(GLESVector3 currentValue) {
-                mRadius = currentValue.mX;
+                mRadius = currentValue.getX();
                 mWhiteholeObject.setRadius(mRadius);
             }
 

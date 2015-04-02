@@ -185,7 +185,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
 
         if (mVersion == GLESConfig.Version.GLES_20) {
 
-            synchronized (this) {
+//            synchronized (this) {
                 int size = mParticles.size();
                 for (int i = 0; i < size; i++) {
                     Particle particle = mParticles.get(i);
@@ -200,7 +200,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
                         elapsedTime = 0f;
                     }
 
-                    x = x + dir.mX * elapsedTime * particle.getVelocityX();
+                    x = x + dir.getX() * elapsedTime * particle.getVelocityX();
 
                     if (mNormalizedTime == 0f) {
                         mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
@@ -208,7 +208,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
                         mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, x);
                     }
 
-                    y = y + dir.mY * elapsedTime * particle.getVelocityX();
+                    y = y + dir.getY() * elapsedTime * particle.getVelocityX();
 
                     if (mNormalizedTime == 0f) {
                         mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
@@ -216,7 +216,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
                         mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
                     }
                 }
-            }
+//            }
             mPosBuffer.position(0);
 
             mVertexInfo.setBuffer(mShader.getPositionAttribIndex(), mPosBuffer);
@@ -486,7 +486,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
 
         mIsDownAnimation = true;
 
-        synchronized (this) {
+//        synchronized (this) {
             GLESVector3 dir = new GLESVector3();
             int size = mParticles.size();
             for (int i = 0; i < size; i++) {
@@ -495,7 +495,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
                 dir.set(mDownX - particle.mX, mDownY - particle.mY, 0f);
                 float length = dir.length();
                 dir.normalize();
-                particle.setDirection(dir.mX, dir.mY, dir.mZ);
+                particle.setDirection(dir.getX(), dir.getY(), dir.getZ());
                 particle.setDistance(length);
 
                 float velocity = length * particle.getVelocityFactor();
@@ -511,11 +511,11 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
 
                     mUserDataBuffer.put(i * 4 + 0, velocity);
                     mUserDataBuffer.put(i * 4 + 1, particleNormalizedDuration);
-                    mUserDataBuffer.put(i * 4 + 2, dir.mX);
-                    mUserDataBuffer.put(i * 4 + 3, dir.mY);
+                    mUserDataBuffer.put(i * 4 + 2, dir.getX());
+                    mUserDataBuffer.put(i * 4 + 3, dir.getY());
                 }
             }
-        }
+//        }
 
         mPrevTick = System.currentTimeMillis();
         mNormalizedTime = 0;
@@ -555,7 +555,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
     }
 
     @Override
-    public void setupVAO(GLESObject object) {
+    public void setupVAO(GLESShader shader, GLESVertexInfo vertexInfo) {
 
     }
 
@@ -660,9 +660,6 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
         GLES30.glDisableVertexAttribArray(index);
 
         index = mShader.getAttribLocation("aUserData");
-        GLES30.glDisableVertexAttribArray(index);
-
-        index = mShader.getAttribLocation("aDirection");
         GLES30.glDisableVertexAttribArray(index);
     }
 }

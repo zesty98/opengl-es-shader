@@ -22,13 +22,20 @@ import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
 import com.gomdev.shader.compressedTexture.CompressedTextureConfig;
 import com.gomdev.shader.cubemapAdv.CubemapAdvConfig;
 import com.gomdev.shader.cubemapBasic.CubemapBasicConfig;
-import com.gomdev.shader.icon.IconConfig;
+import com.gomdev.shader.galleryIcon.GalleryIconActivity;
+import com.gomdev.shader.galleryIcon.GalleryIconConfig;
+import com.gomdev.shader.galleryIntro.GalleryIntroActivity;
+import com.gomdev.shader.galleryIntro.GalleryIntroConfig;
+import com.gomdev.shader.shaderIcon.ShaderIconConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.mipmap.MipmapConfig;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
+import com.gomdev.shader.shaderIcon.ShaderIconActivity;
+import com.gomdev.shader.textRendering.TextRenderingActivity;
+import com.gomdev.shader.textRendering.TextRenderingConfig;
 import com.gomdev.shader.texturedCube.TexturedCubeConfig;
 import com.gomdev.shader.texturedPointAdv.TexturedPointAdvConfig;
 import com.gomdev.shader.texturedPointBasic.TexturedPointBasicConfig;
@@ -71,7 +78,9 @@ public class SampleList {
         setupColoredPlane(version);
         setupTexturePlane(version);
         setupTextureCube(version);
-        setupIcon(version);
+        setupShaderIcon(version);
+        setupGalleryIcon(version);
+        setupGalleryIntro(version);
         setupMipmap(version);
         setupPVL(version);
         setupPFL(version);
@@ -88,6 +97,7 @@ public class SampleList {
         setupIR2(version);
         setupCompressedTexture(version);
         setupTransformFeedback(version);
+//        setupTextRendering(version);
         // setupWhitehole(version);
 
         if (DEBUG) {
@@ -479,11 +489,11 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupIcon(Version version) {
+    private void setupShaderIcon(Version version) {
         SampleInfo info = new SampleInfo();
-        info.mSampleName = IconConfig.EFFECT_NAME;
+        info.mSampleName = ShaderIconConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
-                com.gomdev.shader.icon.IconActivity.class);
+                ShaderIconActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
@@ -511,6 +521,74 @@ public class SampleList {
                     "Object 30 FS",
                     "BG 30 VS",
                     "BG 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupGalleryIcon(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = GalleryIconConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                GalleryIconActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[]{
+                    R.raw.color_20_vs,
+                    R.raw.color_20_fs,
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Object 20 VS",
+                    "Object 20 FS",
+                    "BG 20 VS",
+                    "BG 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[]{
+                    R.raw.color_30_vs,
+                    R.raw.color_30_fs,
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Object 30 VS",
+                    "Object 30 FS",
+                    "BG 30 VS",
+                    "BG 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupGalleryIntro(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = GalleryIntroConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                GalleryIntroActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[]{
+                    R.raw.gallery_intro_20_vs,
+                    R.raw.gallery_intro_20_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Gallery Intro 20 VS",
+                    "Gallery Intro 20 FS"
+            };
+        } else {
+            info.mShaderResIDs = new int[]{
+                    R.raw.gallery_intro_20_vs,
+                    R.raw.gallery_intro_20_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Gallery Intro 20 VS",
+                    "Gallery Intro 20 FS"
             };
         }
 
@@ -737,7 +815,7 @@ public class SampleList {
                 TransformFeedbackActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
-                    R.raw.transformfeedback_20_vs,
+                    R.raw.point2_color_20_vs,
                     R.raw.transformfeedback_20_fs,
             };
 
@@ -754,6 +832,37 @@ public class SampleList {
             info.mShaderTitle = new String[]{
                     "Transform feedback 30 VS",
                     "Transform feedback 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupTextRendering(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = TextRenderingConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                TextRenderingActivity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[]{
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Texture Rectangle 20 VS",
+                    "Texture Rectangle 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[]{
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs,
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Texture Rectangle 30 VS",
+                    "Texture Rectangle 30 FS",
             };
         }
 

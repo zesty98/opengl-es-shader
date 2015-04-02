@@ -4,4 +4,5 @@
     <color name="selectedTextColor">#FFFF</color>
     <color name="defaultTextColor">#FCCC</color>
     <color name="selectedIndicatorColor">#FF33B5E5</color>
+    <color name="galleryIntroTextColor">#FF487CF1</color>
 </resources>
