@@ -53,6 +53,8 @@ public class SampleList {
     private Context mContext = null;
     private ArrayList<SampleInfo> mSamples = new ArrayList<SampleInfo>();
 
+    private Version mVersion = Version.GLES_20;
+
     public SampleList(Context context) {
         mContext = context;
     }
@@ -65,38 +67,37 @@ public class SampleList {
         boolean useGLES30 = pref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
                 GLESConfig.DEFAULT_GLES_VERSION == Version.GLES_30);
 
-        Version version = Version.GLES_20;
         if (useGLES30 == true) {
             GLESContext.getInstance().setVersion(Version.GLES_30);
-            version = Version.GLES_30;
+            mVersion = Version.GLES_30;
         } else {
             GLESContext.getInstance().setVersion(Version.GLES_20);
-            version = Version.GLES_20;
+            mVersion = Version.GLES_20;
         }
 
-        setupColoredTriangle(version);
-        setupColoredPlane(version);
-        setupTexturePlane(version);
-        setupTextureCube(version);
-        setupShaderIcon(version);
-        setupGalleryIcon(version);
-        setupGalleryIntro(version);
-        setupMipmap(version);
-        setupPVL(version);
-        setupPFL(version);
-        setupMultiLighting(version);
-        setupColoredPointBasic(version);
-        setupColoredPointAdv(version);
-        setupTexturedPointBasic(version);
-        setupTexturedPointAdv(version);
-        setupColoredPointBlending(version);
-        setupCubemap(version);
-        setupCubemapAdv(version);
+        setupColoredTriangle();
+        setupColoredPlane();
+        setupTexturePlane();
+        setupTextureCube();
+        setupShaderIcon();
+        setupGalleryIcon();
+        setupGalleryIntro();
+        setupMipmap();
+        setupPVL();
+        setupPFL();
+        setupMultiLighting();
+        setupColoredPointBasic();
+        setupColoredPointAdv();
+        setupTexturedPointBasic();
+        setupTexturedPointAdv();
+        setupColoredPointBlending();
+        setupCubemap();
+        setupCubemapAdv();
         // setupOQ(version);
-        setupIR(version);
-        setupIR2(version);
-        setupCompressedTexture(version);
-        setupTransformFeedback(version);
+        setupIR();
+        setupIR2();
+        setupCompressedTexture();
+        setupTransformFeedback();
 //        setupTextRendering(version);
         // setupWhitehole(version);
 
@@ -108,13 +109,13 @@ public class SampleList {
         }
     }
 
-    private void setupIR(Version version) {
+    private void setupIR() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = IRConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.instancedRendering.IRActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_20_vs,
                     R.raw.pfl_color_20_fs,
@@ -139,13 +140,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupIR2(Version version) {
+    private void setupIR2() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = IR2Config.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.instancedRendering2.IR2Activity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.ir2_20_vs,
                     R.raw.pfl_color_20_fs,
@@ -170,14 +171,14 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupTexturePlane(Version version) {
+    private void setupTexturePlane() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = TexturedRectangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.texturedRectangle.TexturedRectangleActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
@@ -202,14 +203,14 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupTextureCube(Version version) {
+    private void setupTextureCube() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = TexturedCubeConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.texturedCube.TexturedCubeActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
@@ -234,13 +235,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupMipmap(Version version) {
+    private void setupMipmap() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = MipmapConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.mipmap.MipmapActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
@@ -265,12 +266,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupColoredTriangle(Version version) {
+    private void setupColoredTriangle() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = ColoredTriangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.coloredTriangle.ColoredTriangleActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
@@ -295,13 +296,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupColoredPlane(Version version) {
+    private void setupColoredPlane() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = ColoredRectangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.coloredRectangle.ColoredRectangleActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
@@ -326,13 +327,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupColoredPointBasic(Version version) {
+    private void setupColoredPointBasic() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = ColoredPointBasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.coloredPointBasic.ColoredPointBasicActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point_color_20_vs,
                     R.raw.color_20_fs,
@@ -357,13 +358,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupColoredPointAdv(Version version) {
+    private void setupColoredPointAdv() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = ColoredPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 ColoredPointAdvActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point2_color_20_vs,
                     R.raw.point2_color_20_fs,
@@ -388,13 +389,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupTexturedPointBasic(Version version) {
+    private void setupTexturedPointBasic() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = TexturedPointBasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.texturedPointBasic.TexturedPointBasicActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point_texture_20_vs,
                     R.raw.point_texture_20_fs,
@@ -419,13 +420,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupTexturedPointAdv(Version version) {
+    private void setupTexturedPointAdv() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = TexturedPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.texturedPointAdv.TexturedPointAdvActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point2_texture_20_vs,
                     R.raw.point2_texture_20_fs,
@@ -450,13 +451,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupColoredPointBlending(Version version) {
+    private void setupColoredPointBlending() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = ColoredPointBlendingConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 com.gomdev.shader.coloredPointBlending.ColoredPointBlendingActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point_cs_20_vs,
                     R.raw.custom_point_c_20_fs,
@@ -489,12 +490,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupShaderIcon(Version version) {
+    private void setupShaderIcon() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = ShaderIconConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 ShaderIconActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
@@ -527,12 +528,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupGalleryIcon(Version version) {
+    private void setupGalleryIcon() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = GalleryIconConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 GalleryIconActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.color_20_vs,
                     R.raw.color_20_fs,
@@ -565,12 +566,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupGalleryIntro(Version version) {
+    private void setupGalleryIntro() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = GalleryIntroConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 GalleryIntroActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.gallery_intro_20_vs,
                     R.raw.gallery_intro_20_fs
@@ -595,12 +596,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupPVL(Version version) {
+    private void setupPVL() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = PVLConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.perVertexLighting.PVLActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.pvl_color_20_vs,
                     R.raw.pvl_color_20_fs
@@ -625,13 +626,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupCubemap(Version version) {
+    private void setupCubemap() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = CubemapBasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.cubemapBasic.CubemapBasicActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.cubemap_texture_20_vs,
                     R.raw.cubemap_texture_20_fs,
@@ -656,13 +657,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupCubemapAdv(Version version) {
+    private void setupCubemapAdv() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = CubemapAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.cubemapAdv.CubemapAdvActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.cubemap2_texture_20_vs,
                     R.raw.cubemap2_texture_20_fs,
@@ -687,12 +688,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupPFL(Version version) {
+    private void setupPFL() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = PFLConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.perFragmentLighting.PFLActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_20_vs,
                     R.raw.pfl_color_20_fs
@@ -717,12 +718,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    // private void setupOQ(Version version) {
+    // private void setupOQ() {
     // SampleInfo info = new SampleInfo();
     // info.mSampleName = OQConfig.EFFECT_NAME;
     // info.mIntent = new Intent(mContext,
     // com.gomdev.shader.occlusionQuery.OQActivity.class);
-    // if (version == Version.GLES_20) {
+    // if (mVersion == Version.GLES_20) {
     // info.mShaderResIDs = new int[] {
     // R.raw.oq_20_vs,
     // R.raw.oq_20_fs,
@@ -747,12 +748,12 @@ public class SampleList {
     // mSamples.add(info);
     // }
 
-    private void setupMultiLighting(Version version) {
-        SampleInfo info = new SampleInfo();
+    private void setupMultiLighting() {
+       SampleInfo info = new SampleInfo();
         info.mSampleName = MultiLightingConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.multiLighting.MultiLightingActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.pfl_color_20_vs,
                     R.raw.pfl_color_20_fs,
@@ -777,12 +778,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupCompressedTexture(Version version) {
+    private void setupCompressedTexture() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = CompressedTextureConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.compressedTexture.CompressedTextureActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
@@ -807,13 +808,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupTransformFeedback(Version version) {
+    private void setupTransformFeedback() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = TransformFeedbackConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 mContext,
                 TransformFeedbackActivity.class);
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.point2_color_20_vs,
                     R.raw.transformfeedback_20_fs,
@@ -838,13 +839,13 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    private void setupTextRendering(Version version) {
+    private void setupTextRendering() {
         SampleInfo info = new SampleInfo();
         info.mSampleName = TextRenderingConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 TextRenderingActivity.class);
 
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             info.mShaderResIDs = new int[]{
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
@@ -869,12 +870,12 @@ public class SampleList {
         mSamples.add(info);
     }
 
-    // private void setupWhitehole(Version version) {
+    // private void setupWhitehole() {
     // SampleInfo info = new SampleInfo();
     // info.mSampleName = WhiteholeConfig.EFFECT_NAME;
     // info.mIntent = new Intent(mContext,
     // com.gomdev.shader.whitehole.WhiteholeActivity.class);
-    // if (version == Version.GLES_20) {
+    // if (mVersion == Version.GLES_20) {
     // info.mShaderResIDs = new int[] {
     // R.raw.whitehole_20_vs,
     // R.raw.whitehole_20_fs,
