@@ -219,8 +219,6 @@ void checkGLError(char* str) {
 #endif
 }
 
-
-
 jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderInfoLog(
         JNIEnv * env, jobject obj, jint shader) {
     GLint infoLen = 0;
@@ -259,6 +257,11 @@ jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetProgramInfoLog(
 
     return result;
 
+}
+
+void JNICALL Java_com_gomdev_gles_GLESShader_nTexSubImage2D
+  (JNIEnv *_env, jobject _this, jint target, jint level, jint xoffset, jint yoffset, jint width, jint height, jint format, jint type, jint offset) {
+  glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, (void*)offset);
 }
 
 int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary

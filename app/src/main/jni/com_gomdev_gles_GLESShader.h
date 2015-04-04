@@ -18,6 +18,8 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderInfoLog
   (JNIEnv *, jobject, jint);
 
+
+
 /*
  * Class:     com_gomdev_gles_GLESShader
  * Method:    nGetShaderCompileLog
@@ -25,6 +27,13 @@ JNIEXPORT jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderInfoLog
  */
 JNIEXPORT jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetProgramInfoLog
   (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_gomdev_gles_GLESShader
+ * Method:    nTexSubImage2D
+*/
+JNIEXPORT void JNICALL Java_com_gomdev_gles_GLESShader_nTexSubImage2D
+  (JNIEnv *_env, jobject _this, jint target, jint level, jint xoffset, jint yoffset, jint width, jint height, jint format, jint type, jint offset);
 
 /*
  * Class:     com_gomdev_gles_GLESShader
