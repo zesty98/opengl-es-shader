@@ -2,9 +2,7 @@ package com.gomdev.shader.galleryIntro;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -23,7 +21,6 @@ import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
 import com.gomdev.gles.GLESTexture;
-import com.gomdev.gles.GLESUtils;
 import com.gomdev.gles.GLESVector3;
 import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.shader.R;
@@ -38,12 +35,6 @@ public class GalleryIntroRenderer extends SampleRenderer {
     private static final String CLASS = "GalleryIntroRenderer";
     private static final String TAG = GalleryIntroConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = GalleryIntroConfig.DEBUG;
-
-    private static final float TEXT_SHADOW_RADIUS = 1f;
-    private static final float TEXT_SHADOW_DX = 0.5f;
-    private static final float TEXT_SHADOW_DY = 0.5f;
-    private static final float TEXT_MARGIN = 1f;
-    private static final int SHADOW_COLOR = 0xFF666666;
 
     private static final int NUM_OF_POINT_IN_GOM_WIDTH = 100;
     private static final int NUM_ELEMENT_OF_POSITION = 3;
@@ -87,32 +78,21 @@ public class GalleryIntroRenderer extends SampleRenderer {
 
     private final GLESSceneManager mSM;
     private final GLESNode mRoot;
-    private final GLESObject mGomObject;
-    private final GLESObject mGalleryObject;
+    private final GLESObject mIntroObject;
 
     private Version mVersion;
 
     private Random mRandom = new Random();
     private Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
 
-    private GLESShader mGomShader = null;
-    private GLESShader mGalleryShader = null;
+    private GLESShader mShader = null;
 
     private GLESAnimator mAnimator = null;
 
     private int mWidth = 0;
     private int mHeight = 0;
 
-    private float mShadowRadius = 0f;
-    private float mShadowDx = 0f;
-    private float mShadowDy = 0f;
-    private float mTextSize = 0f;
-    private float mTextMargin = 0f;
-
-    private int mTextColor = 0;
-
-    private ParticleSet mGomParticleSet = new ParticleSet();
-    private ParticleSet mGalleryParticleSet = new ParticleSet();
+    private ParticleSet mParticleSet = new ParticleSet();
 
     private boolean mIsOnAnimation = false;
 
@@ -133,23 +113,12 @@ public class GalleryIntroRenderer extends SampleRenderer {
         state.setCullFace(GLES20.GL_BACK);
         state.setDepthState(false);
         state.setBlendState(true);
-        state.setBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        state.setBlendFuncSeperate(GLES20.GL_ONE, GLES20.GL_ONE_MINUS_SRC_ALPHA,
+                GLES20.GL_ONE, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 
-        mGomObject = mSM.createObject("Gom");
-        mGomObject.setGLState(state);
-        mRoot.addChild(mGomObject);
-
-        mGalleryObject = mSM.createObject("Gallery");
-        mGalleryObject.setGLState(state);
-        mRoot.addChild(mGalleryObject);
-
-        mShadowRadius = GLESUtils.getPixelFromDpi(mContext, TEXT_SHADOW_RADIUS);
-        mShadowDx = GLESUtils.getPixelFromDpi(mContext, TEXT_SHADOW_DX);
-        mShadowDy = GLESUtils.getPixelFromDpi(mContext, TEXT_SHADOW_DY);
-        mTextMargin = GLESUtils.getPixelFromDpi(mContext, TEXT_MARGIN);
-        mTextSize = mContext.getResources().getDimensionPixelSize(R.dimen.intro_text_size);
-
-        mTextColor = mContext.getResources().getColor(R.color.galleryIntroTextColor);
+        mIntroObject = mSM.createObject("Intro");
+        mIntroObject.setGLState(state);
+        mRoot.addChild(mIntroObject);
 
         mAnimator = new GLESAnimator(mAnimatorCB);
         mAnimator.setValues(0f, 1f);
@@ -185,80 +154,41 @@ public class GalleryIntroRenderer extends SampleRenderer {
         mRenderer.reset();
 
         GLESCamera camera = setupCamera(width, height);
-        mGomObject.setCamera(camera);
-        mGalleryObject.setCamera(camera);
+        mIntroObject.setCamera(camera);
 
-        Bitmap gomBitmap = createTextBitmap("Gom");
-        float gomWidth = gomBitmap.getWidth();
-        float gomHeight = gomBitmap.getHeight();
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.intro);
+        float imgWidth = bitmap.getWidth();
+        float imgHeight = bitmap.getHeight();
 
-        GLESTexture gomTexture = new GLESTexture.Builder(GLES20.GL_TEXTURE_2D, (int) gomWidth, (int) gomHeight)
-                .load(gomBitmap);
-        mGomObject.setTexture(gomTexture);
-        gomBitmap.recycle();
-
-        Bitmap galleryBitmap = createTextBitmap("Gallery");
-        float galleryWidth = galleryBitmap.getWidth();
-        float galleryHeight = galleryBitmap.getHeight();
-
-        GLESTexture galleryTexture = new GLESTexture.Builder(GLES20.GL_TEXTURE_2D, (int) galleryWidth, (int) galleryHeight)
-                .load(galleryBitmap);
-        mGalleryObject.setTexture(galleryTexture);
-        galleryBitmap.recycle();
-
-        float margin = (mWidth - (gomWidth * 0.5f + galleryWidth)) * 0.5f;
+        GLESTexture gomTexture = new GLESTexture.Builder(GLES20.GL_TEXTURE_2D, (int) imgWidth, (int) imgHeight)
+                .load(bitmap);
+        mIntroObject.setTexture(gomTexture);
+        bitmap.recycle();
 
         {
-            float gomStartX = -mWidth * 0.5f + margin;
-            float gomStartY = gomHeight;
+            float startX = -imgWidth * 0.5f;
+            float startY = imgHeight * 0.7f;
 
-            float pointSize = Math.round(gomWidth / NUM_OF_POINT_IN_GOM_WIDTH);
-            int numOfPointsInWidth = (int) Math.ceil(gomWidth / pointSize);
-            float temp = numOfPointsInWidth * gomHeight / gomWidth;
+            float pointSize = Math.round(imgWidth / NUM_OF_POINT_IN_GOM_WIDTH);
+            int numOfPointsInWidth = (int) Math.ceil(imgWidth / pointSize);
+            float temp = numOfPointsInWidth * imgHeight / imgWidth;
             int numOfPointsInHeight = (int) Math.ceil(temp);
             int numOfPoints = numOfPointsInWidth * numOfPointsInHeight;
 
-            mGomParticleSet.mX = gomStartX;
-            mGomParticleSet.mY = gomStartY;
-            mGomParticleSet.mWidth = gomWidth;
-            mGomParticleSet.mHeight = gomHeight;
-            mGomParticleSet.mNumOfPointsInWidth = numOfPointsInWidth;
-            mGomParticleSet.mNumOfPointsInHeight = numOfPointsInHeight;
-            mGomParticleSet.mNumOfPoints = numOfPoints;
-            mGomParticleSet.mPointSize = pointSize;
-            mGomParticleSet.mShader = mGomShader;
+            mParticleSet.mX = startX;
+            mParticleSet.mY = startY;
+            mParticleSet.mWidth = imgWidth;
+            mParticleSet.mHeight = imgHeight;
+            mParticleSet.mNumOfPointsInWidth = numOfPointsInWidth;
+            mParticleSet.mNumOfPointsInHeight = numOfPointsInHeight;
+            mParticleSet.mNumOfPoints = numOfPoints;
+            mParticleSet.mPointSize = pointSize;
+            mParticleSet.mShader = mShader;
 
-            GLESVertexInfo gomVertexInfo = createParticles(mGomParticleSet);
-            mGomObject.setVertexInfo(gomVertexInfo, false, false);
+            GLESVertexInfo gomVertexInfo = createParticles(mParticleSet);
+            mIntroObject.setVertexInfo(gomVertexInfo, false, false);
 
-            setUniforms(mGomParticleSet);
-        }
-
-        {
-            float galleryStartX = -mWidth * 0.5f + margin + gomWidth * 0.5f;
-            float galleryStartY = 0f;
-
-            float pointSize = Math.round(gomWidth / NUM_OF_POINT_IN_GOM_WIDTH);
-            ;
-            int numOfPointsInWidth = (int) Math.ceil(galleryWidth / pointSize);
-            float temp = numOfPointsInWidth * galleryHeight / galleryWidth;
-            int numOfPointsInHeight = (int) Math.ceil(temp);
-            int numOfPoints = numOfPointsInWidth * numOfPointsInHeight;
-
-            mGalleryParticleSet.mX = galleryStartX;
-            mGalleryParticleSet.mY = galleryStartY;
-            mGalleryParticleSet.mWidth = galleryWidth;
-            mGalleryParticleSet.mHeight = galleryHeight;
-            mGalleryParticleSet.mNumOfPointsInWidth = numOfPointsInWidth;
-            mGalleryParticleSet.mNumOfPointsInHeight = numOfPointsInHeight;
-            mGalleryParticleSet.mNumOfPoints = numOfPoints;
-            mGalleryParticleSet.mPointSize = pointSize;
-            mGalleryParticleSet.mShader = mGalleryShader;
-
-            GLESVertexInfo galleryVertexInfo = createParticles(mGalleryParticleSet);
-            mGalleryObject.setVertexInfo(galleryVertexInfo, false, false);
-
-            setUniforms(mGalleryParticleSet);
+            setUniforms(mParticleSet);
         }
 
         mAnimator.start();
@@ -318,7 +248,8 @@ public class GalleryIntroRenderer extends SampleRenderer {
                 Particle particle = new Particle(posX, posY, posZ);
                 particleSet.mParticles.add(particle);
 
-                if (particleSet == mGomParticleSet) {
+                boolean rightSide = mRandom.nextBoolean();
+                if (rightSide == true) {
                     particle.mInitX = -mWidth - mRandom.nextFloat() * 0.2f * mWidth;
                 } else {
                     particle.mInitX = mWidth + mRandom.nextFloat() * 0.2f * mWidth;
@@ -362,43 +293,6 @@ public class GalleryIntroRenderer extends SampleRenderer {
         return camera;
     }
 
-    private Bitmap createTextBitmap(String text) {
-        Paint textPaint = new Paint();
-        textPaint.setAntiAlias(true);
-        textPaint.setShadowLayer(
-                mShadowRadius,
-                mShadowDx,
-                mShadowDy,
-                SHADOW_COLOR);
-        textPaint.setTextSize(mTextSize);
-        textPaint.setARGB(0xFF, 0x00, 0x00, 0x00);
-        textPaint.setColor(mTextColor);
-        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        textPaint.setAntiAlias(true);
-
-        Rect bound = new Rect();
-        textPaint.getTextBounds(text, 0, text.length(), bound);
-
-        int ascent = (int) Math.ceil(-textPaint.ascent());
-        int descent = (int) Math.ceil(textPaint.descent());
-
-        int textHeight = ascent + descent;
-
-        int width = (int) (textPaint.measureText(text) + mTextMargin * 2);
-        int height = (int) (textHeight + mTextMargin * 2);
-
-
-        int x = (int) mTextMargin;
-        int y = (height - textHeight) / 2 + ascent;
-
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        bitmap = GLESUtils.drawTextToBitmap(x, y,
-                text, textPaint, bitmap);
-
-        return bitmap;
-    }
-
     @Override
     protected void onSurfaceCreated() {
         if (DEBUG) {
@@ -407,9 +301,7 @@ public class GalleryIntroRenderer extends SampleRenderer {
 
         GLES20.glClearColor(1f, 1f, 1f, 1f);
 
-        mGomObject.setShader(mGomShader);
-        mGalleryObject.setShader(mGalleryShader);
-
+        mIntroObject.setShader(mShader);
     }
 
     @Override
@@ -419,43 +311,22 @@ public class GalleryIntroRenderer extends SampleRenderer {
         }
 
         {
-            mGomShader = new GLESShader(mContext);
+            mShader = new GLESShader(mContext);
 
             String vsSource = ShaderUtils.getShaderSource(mContext, 0);
             String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
-            mGomShader.setShaderSource(vsSource, fsSource);
-            if (mGomShader.load() == false) {
+            mShader.setShaderSource(vsSource, fsSource);
+            if (mShader.load() == false) {
                 return false;
             }
 
             if (mVersion == Version.GLES_20) {
                 String attribName = GLESShaderConstant.ATTRIB_POSITION;
-                mGomShader.setPositionAttribIndex(attribName);
+                mShader.setPositionAttribIndex(attribName);
 
                 attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-                mGomShader.setTexCoordAttribIndex(attribName);
-            }
-        }
-
-        {
-            mGalleryShader = new GLESShader(mContext);
-
-            String vsSource = ShaderUtils.getShaderSource(mContext, 0);
-            String fsSource = ShaderUtils.getShaderSource(mContext, 1);
-
-            mGalleryShader.setShaderSource(vsSource, fsSource);
-            if (mGalleryShader.load() == false) {
-                mHandler.sendEmptyMessage(SampleRenderer.COMPILE_OR_LINK_ERROR);
-                return false;
-            }
-
-            if (mVersion == Version.GLES_20) {
-                String attribName = GLESShaderConstant.ATTRIB_POSITION;
-                mGalleryShader.setPositionAttribIndex(attribName);
-
-                attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-                mGalleryShader.setTexCoordAttribIndex(attribName);
+                mShader.setTexCoordAttribIndex(attribName);
             }
         }
 
@@ -492,40 +363,10 @@ public class GalleryIntroRenderer extends SampleRenderer {
             float normalizedValue = mInterpolator.getInterpolation(current.getX());
 
             {
-                GLESShader shader = mGomParticleSet.mShader;
-                ArrayList<Particle> particles = mGomParticleSet.mParticles;
+                GLESShader shader = mParticleSet.mShader;
+                ArrayList<Particle> particles = mParticleSet.mParticles;
 
-                GLESVertexInfo vertexInfo = mGomObject.getVertexInfo();
-                FloatBuffer position = (FloatBuffer) vertexInfo.getBuffer(shader.getPositionAttribIndex());
-
-                float x = 0f;
-                float y = 0f;
-
-                float scaledNormalizedValue = 0f;
-
-                int size = particles.size();
-                for (int i = 0; i < size; i++) {
-                    Particle particle = particles.get(i);
-
-                    scaledNormalizedValue = normalizedValue * particle.mVelocity;
-
-                    if (scaledNormalizedValue > 1f) {
-                        scaledNormalizedValue = 1f;
-                    }
-
-                    x = particle.mInitX + (particle.mX - particle.mInitX) * scaledNormalizedValue;
-                    y = particle.mInitY + (particle.mY - particle.mInitY) * scaledNormalizedValue;
-
-                    position.put(i * NUM_ELEMENT_OF_POSITION + 0, x);
-                    position.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
-                }
-            }
-
-            {
-                GLESShader shader = mGalleryParticleSet.mShader;
-                ArrayList<Particle> particles = mGalleryParticleSet.mParticles;
-
-                GLESVertexInfo vertexInfo = mGalleryObject.getVertexInfo();
+                GLESVertexInfo vertexInfo = mIntroObject.getVertexInfo();
                 FloatBuffer position = (FloatBuffer) vertexInfo.getBuffer(shader.getPositionAttribIndex());
 
                 float x = 0f;
