@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.gomdev.gles.GLESFileUtils;
+import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESVertexInfo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -173,5 +175,79 @@ public class ShaderUtils {
         }
 
         return cpuInfos;
+    }
+
+    public static GLESVertexInfo createPlane(GLESShader shader,
+                                             float x, float y,
+                                             float width, float height,
+                                             boolean useNormal, boolean useTexCoord, boolean useColor,
+                                             boolean useIndex, float red, float green, float blue) {
+
+        float left = x;
+        float right = x + width;
+        float top = y;
+        float bottom = y - height;
+        float z = 0.0f;
+
+        float[] vertex = {
+                left, bottom, z,
+                right, bottom, z,
+                left, top, z,
+                right, top, z
+        };
+
+        GLESVertexInfo vertexInfo = new GLESVertexInfo();
+
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertex, 3);
+
+        if (useTexCoord == true) {
+            float[] texCoord = {
+                    0f, 1f,
+                    1f, 1f,
+                    0f, 0f,
+                    1f, 0f
+            };
+
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
+        }
+
+        if (useNormal == true) {
+            float[] normal = {
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+                    0f, 0f, 1f
+            };
+
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
+        }
+
+        if (useColor == true) {
+            float[] color = {
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+            };
+
+            vertexInfo.setBuffer(shader.getColorAttribIndex(), color, 4);
+        }
+
+        if (useIndex == true) {
+            short[] index = {
+                    0, 1, 2,
+                    2, 1, 3
+            };
+
+            vertexInfo.setIndexBuffer(index);
+
+            vertexInfo.setRenderType(GLESVertexInfo.RenderType.DRAW_ELEMENTS);
+            vertexInfo.setPrimitiveMode(GLESVertexInfo.PrimitiveMode.TRIANGLES);
+        } else {
+            vertexInfo.setRenderType(GLESVertexInfo.RenderType.DRAW_ARRAYS);
+            vertexInfo.setPrimitiveMode(GLESVertexInfo.PrimitiveMode.TRIANGLE_STRIP);
+        }
+
+        return vertexInfo;
     }
 }

@@ -30,6 +30,8 @@ import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.mipmap.MipmapConfig;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
+import com.gomdev.shader.pbo.PBOActivity;
+import com.gomdev.shader.pbo.PBOConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
 import com.gomdev.shader.shaderIcon.ShaderIconActivity;
@@ -98,6 +100,7 @@ public class SampleList {
         setupIR2();
         setupCompressedTexture();
         setupTransformFeedback();
+        setupPBO();
 //        setupTextRendering(version);
         // setupWhitehole(version);
 
@@ -833,6 +836,45 @@ public class SampleList {
             info.mShaderTitle = new String[]{
                     "Transform feedback 30 VS",
                     "Transform feedback 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupPBO() {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = PBOConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                PBOActivity.class);
+
+        if (mVersion == Version.GLES_20) {
+            info.mShaderResIDs = new int[]{
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
+                    R.raw.pbo_color_20_vs,
+                    R.raw.pbo_color_20_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "PBO 20 VS",
+                    "PBO 20 FS",
+                    "Red line 20 VS",
+                    "Red line 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[]{
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs,
+                    R.raw.pbo_color_30_vs,
+                    R.raw.pbo_color_30_fs
+            };
+
+            info.mShaderTitle = new String[]{
+                    "PBO 30 VS",
+                    "PBO 30 FS",
+                    "Red line 30 VS",
+                    "Red line 30 FS"
             };
         }
 

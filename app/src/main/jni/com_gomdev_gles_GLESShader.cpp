@@ -1,14 +1,17 @@
 #include "com_gomdev_gles_GLESShader.h"
 
 #include <jni.h>
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+//#include <GLES2/gl2.h>
+//#include <GLES2/gl2ext.h>
+#include <GLES3/gl3.h>
+#include <GLES3/gl3ext.h>
 #include <EGL/egl.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <android/log.h>
 #include <android/asset_manager.h>
+#include <android/bitmap.h>
 
 #include <string.h>
 
@@ -34,8 +37,8 @@ typedef struct _BinaryInfo {
 
 static BinaryInfo* spRoot = NULL;
 
-static PFNGLGETPROGRAMBINARYOESPROC glGetProgramBinaryOES = NULL;
-static PFNGLPROGRAMBINARYOESPROC glProgramBinaryOES = NULL;
+//static PFNGLGETPROGRAMBINARYOESPROC glGetProgramBinaryOES = NULL;
+//static PFNGLPROGRAMBINARYOESPROC glProgramBinaryOES = NULL;
 
 static int sBinaryFormat = -1;
 
@@ -275,7 +278,7 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
     const char* fileName = env->GetStringUTFChars(str, NULL);
     if(fileName != NULL)
     {
-        glGetProgramiv(program, GL_PROGRAM_BINARY_LENGTH_OES, &binaryLength);
+        glGetProgramiv(program, GL_PROGRAM_BINARY_LENGTH, &binaryLength);
 
         checkGLError("retrieve() glGetProgramiv");
 
@@ -288,10 +291,10 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
             LOGE("nRetrieveProgramBinary() malloc fail");
         }
 
-        if (glGetProgramBinaryOES == NULL) {
-            glGetProgramBinaryOES = (PFNGLGETPROGRAMBINARYOESPROC) eglGetProcAddress("glGetProgramBinaryOES");
-        }
-        glGetProgramBinaryOES(program, binaryLength, NULL, &binaryFormat, binary);
+//        if (glGetProgramBinaryOES == NULL) {
+//            glGetProgramBinaryOES = (PFNGLGETPROGRAMBINARYOESPROC) eglGetProcAddress("glGetProgramBinaryOES");
+//        }
+        glGetProgramBinary(program, binaryLength, NULL, &binaryFormat, binary);
 
         checkGLError("retrieve() glGetProgramBinaryOES");
 
@@ -362,10 +365,10 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
             add(binaryInfo);
         }
 
-        if (glProgramBinaryOES == NULL) {
-            glProgramBinaryOES = (PFNGLPROGRAMBINARYOESPROC) eglGetProcAddress("glProgramBinaryOES");
-        }
-        glProgramBinaryOES(program,
+//        if (glProgramBinaryOES == NULL) {
+//            glProgramBinaryOES = (PFNGLPROGRAMBINARYOESPROC) eglGetProcAddress("glProgramBinaryOES");
+//        }
+        glProgramBinary(program,
                 sBinaryFormat,
                 binaryInfo->binary,
                 binaryInfo->length);
@@ -394,6 +397,39 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
 
 int JNICALL Java_com_gomdev_gles_GLESShader_nFreeBinary(JNIEnv * env, jobject obj) {
     clear();
+}
+
+static void* sBuffer = NULL;
+
+
+
+void JNICALL Java_com_gomdev_gles_GLESShader_nMapBufferRange
+(JNIEnv * env, jobject obj, jint size)
+{
+    sBuffer = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, size, GL_MAP_WRITE_BIT);
+    if (sBuffer == NULL) {
+        LOGE("nMapBufferRange() return null");
+    }
+}
+
+void JNICALL Java_com_gomdev_gles_GLESShader_nUnmapBuffer
+(JNIEnv * env, jobject obj) {
+    GLboolean result = glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+    if (result == GL_FALSE) {
+        LOGE("nUnmapBuffer() return false");
+    }
+}
+
+void JNICALL Java_com_gomdev_gles_GLESShader_nUploadBuffer
+(JNIEnv * env, jobject obj,  jobject bitmap, jint stride, jint x, jint y, jint width, jint height)
+{
+    char* buffer;
+    AndroidBitmap_lockPixels(env, bitmap, (void**) &buffer);
+    int i = 0;
+    for (i = 0; i < height; i++) {
+        memcpy(((char*)sBuffer) + width * 4 * i, buffer + (y + i) * stride * 4 + x * 4, width * 4);
+    }
+    AndroidBitmap_unlockPixels(env, bitmap);
 }
 
 #ifdef __cplusplus

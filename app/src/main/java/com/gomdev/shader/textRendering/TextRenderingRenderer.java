@@ -7,12 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
-import android.opengl.GLUtils;
 import android.os.Build;
 import android.util.Log;
 
 import com.gomdev.gles.GLESCamera;
-import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESGLState;
@@ -34,9 +32,6 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
 
 public class TextRenderingRenderer extends SampleRenderer implements GLESRendererListener {
     private static final String CLASS = "TextRenderingRenderer";
@@ -362,7 +357,7 @@ public class TextRenderingRenderer extends SampleRenderer implements GLESRendere
         if (mVersion == Version.GLES_30) {
             unmap();
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mTextureID);
-            mShader.glTexSubImage2D(GLES30.GL_TEXTURE_2D, 0, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, 0);
+            mShader.texSubImage2D(GLES30.GL_TEXTURE_2D, 0, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, 0);
         } else {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
             Buffer buffer = ByteBuffer

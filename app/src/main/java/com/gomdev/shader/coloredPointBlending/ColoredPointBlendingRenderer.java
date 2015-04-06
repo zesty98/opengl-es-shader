@@ -133,6 +133,8 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
         builder.append("Sorting : false\n");
         builder.append("Blending : disable\n");
 
+        int margin = mContext.getResources().getDimensionPixelSize(R.dimen.textview_margin);
+        mBlendingInfoView.setPadding(margin, margin, margin, margin);
         mBlendingInfoView.setText(builder.toString());
         mBlendingInfoView.setInputType(InputType.TYPE_CLASS_TEXT
                 | InputType.TYPE_TEXT_FLAG_MULTI_LINE);

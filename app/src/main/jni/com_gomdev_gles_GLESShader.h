@@ -54,6 +54,15 @@ JNIEXPORT jint JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
 JNIEXPORT jint JNICALL Java_com_gomdev_gles_GLESShader_nFreeBinary
   (JNIEnv * env, jobject obj);
 
+JNIEXPORT void JNICALL Java_com_gomdev_gles_GLESShader_nMapBufferRange
+          (JNIEnv * env, jobject obj, jint size);
+
+JNIEXPORT void JNICALL Java_com_gomdev_gles_GLESShader_nUnmapBuffer
+          (JNIEnv * env, jobject obj);
+
+JNIEXPORT void JNICALL Java_com_gomdev_gles_GLESShader_nUploadBuffer
+          (JNIEnv * env, jobject obj,  jobject bitmap, jint stride, jint x, jint y, jint width, jint height);
+
 #ifdef __cplusplus
 }
 #endif
