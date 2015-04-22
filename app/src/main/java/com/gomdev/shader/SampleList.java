@@ -254,8 +254,8 @@ public class SampleList {
             };
 
             info.mShaderTitle = new String[]{
-                    "Texture Rectangle 20 VS",
-                    "Texture Rectangle 20 FS",
+                    "Multi-Texture 20 VS",
+                    "Multi-Rectangle 20 FS",
             };
         } else {
             info.mShaderResIDs = new int[]{
@@ -264,8 +264,8 @@ public class SampleList {
             };
 
             info.mShaderTitle = new String[]{
-                    "Texture Rectangle 30 VS",
-                    "Texture Rectangle 30 FS",
+                    "Multi-Rectangle 30 VS",
+                    "Multi-Rectangle 30 FS",
             };
         }
 

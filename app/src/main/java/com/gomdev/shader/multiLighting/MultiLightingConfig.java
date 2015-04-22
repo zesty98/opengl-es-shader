@@ -5,5 +5,5 @@ public class MultiLightingConfig {
     static final boolean DEBUG_PERF = false;
     static final String TAG = "gomdev";
 
-    public static final String EFFECT_NAME = "MultiLighting";
+    public static final String EFFECT_NAME = "Multi-Lighting";
 }

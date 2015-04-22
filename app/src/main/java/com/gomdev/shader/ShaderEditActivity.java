@@ -33,6 +33,9 @@ public class ShaderEditActivity extends Activity implements Ad {
         mShaderSource = ShaderUtils.getShaderSource(this);
 
         mEditView.setText(mShaderSource);
+
+        ShaderInfo savedShaderInfo = ShaderContext.getInstance().getSavedShaderInfo();
+        getActionBar().setTitle(savedShaderInfo.mTitle);
     }
 
     @Override

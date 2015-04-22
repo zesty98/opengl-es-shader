@@ -5,5 +5,5 @@ public class IRConfig {
     static final boolean DEBUG_PERF = false;
     static final String TAG = "gomdev";
 
-    public static final String EFFECT_NAME = "InstancedRendering";
+    public static final String EFFECT_NAME = "Instanced Rendering";
 }

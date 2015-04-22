@@ -26,6 +26,9 @@ public class ShaderViewActivity extends Activity implements Ad {
         setContentView(R.layout.common_main);
 
         mTextView = (TextView) findViewById(R.id.shader_view);
+
+        ShaderInfo savedShaderInfo = ShaderContext.getInstance().getSavedShaderInfo();
+        getActionBar().setTitle(savedShaderInfo.mTitle);
     }
 
     @Override

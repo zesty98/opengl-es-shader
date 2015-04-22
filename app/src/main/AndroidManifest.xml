@@ -56,163 +56,163 @@
             android:name="com.gomdev.shader.whitehole.WhiteholeActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Whitehole" >
         </activity>
         <activity
             android:name="com.gomdev.shader.coloredTriangle.ColoredTriangleActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Color Triangle" >
         </activity>
         <activity
             android:name="com.gomdev.shader.coloredRectangle.ColoredRectangleActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Color Rectangle" >
         </activity>
         <activity
             android:name="com.gomdev.shader.texturedCube.TexturedCubeActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Texture Cube" >
         </activity>
         <activity
             android:name=".shaderIcon.ShaderIconActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Shader Icon" >
         </activity>
         <activity
             android:name=".galleryIcon.GalleryIconActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Gallery Icon" >
         </activity>
         <activity
             android:name=".galleryIntro.GalleryIntroActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Gallery Intro" >
         </activity>
         <activity
             android:name="com.gomdev.shader.texturedRectangle.TexturedRectangleActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Texture Rectangle" >
         </activity>
         <activity
             android:name="com.gomdev.shader.multiTexture.MultiTextureActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Multi-Texture" >
         </activity>
         <activity
             android:name="com.gomdev.shader.mipmap.MipmapActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Mipmap" >
         </activity>
         <activity
             android:name="com.gomdev.shader.coloredPointBasic.ColoredPointBasicActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Color Point Basic" >
         </activity>
         <activity
             android:name=".coloredPointAdv.ColoredPointAdvActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Color Point Adv." >
         </activity>
         <activity
             android:name="com.gomdev.shader.texturedPointBasic.TexturedPointBasicActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Texture Point Basic" >
         </activity>
         <activity
             android:name="com.gomdev.shader.texturedPointAdv.TexturedPointAdvActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Texxture Point Adv." >
         </activity>
         <activity
             android:name="com.gomdev.shader.coloredPointBlending.ColoredPointBlendingActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Color Point Blending" >
         </activity>
         <activity
             android:name="com.gomdev.shader.cubemapBasic.CubemapBasicActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Cubemap Basic" >
         </activity>
         <activity
             android:name="com.gomdev.shader.cubemapAdv.CubemapAdvActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Cubemap Adv." >
         </activity>
         <activity
             android:name="com.gomdev.shader.instancedRendering.IRActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Instanced Rendering" >
         </activity>
         <activity
             android:name="com.gomdev.shader.instancedRendering2.IR2Activity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Instanced Rendering 2" >
         </activity>
         <activity
             android:name="com.gomdev.shader.occlusionQuery.OQActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Occlusion Query" >
         </activity>
         <activity
             android:name="com.gomdev.shader.perVertexLighting.PVLActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Per Vertex Lighting" >
         </activity>
         <activity
             android:name="com.gomdev.shader.perFragmentLighting.PFLActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Per Fragment Lighting" >
         </activity>
         <activity
             android:name="com.gomdev.shader.multiLighting.MultiLightingActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Multi-Lighting" >
         </activity>
         <activity
             android:name="com.gomdev.shader.compressedTexture.CompressedTextureActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Compressed Texture" >
         </activity>
         <activity
             android:name="com.gomdev.shader.transformFeedback.TransformFeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Transform Feedback" >
         </activity>
         <activity
             android:name="com.gomdev.shader.pbo.PBOActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="PBO &amp; Tiled Rendering" >
         </activity>
         <activity
             android:name="com.gomdev.shader.textRendering.TextRenderingActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="Text Rendering" >
         </activity>
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
