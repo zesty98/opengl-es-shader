@@ -101,6 +101,12 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.gomdev.shader.multiTexture.MultiTextureActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.gomdev.shader.mipmap.MipmapActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"

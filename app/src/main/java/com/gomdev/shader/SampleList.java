@@ -30,6 +30,7 @@ import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.mipmap.MipmapConfig;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
+import com.gomdev.shader.multiTexture.MultiTextureConfig;
 import com.gomdev.shader.pbo.PBOActivity;
 import com.gomdev.shader.pbo.PBOConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
@@ -81,6 +82,7 @@ public class SampleList {
         setupColoredPlane();
         setupTexturePlane();
         setupTextureCube();
+        setupMultiTexture();
         setupShaderIcon();
         setupGalleryIcon();
         setupGalleryIntro();
@@ -232,6 +234,38 @@ public class SampleList {
             info.mShaderTitle = new String[]{
                     "Texture Cube 30 VS",
                     "Texture Cube 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupMultiTexture() {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = MultiTextureConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                mContext,
+                com.gomdev.shader.multiTexture.MultiTextureActivity.class);
+
+        if (mVersion == Version.GLES_20) {
+            info.mShaderResIDs = new int[]{
+                    R.raw.multi_texture_20_vs,
+                    R.raw.multi_texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Texture Rectangle 20 VS",
+                    "Texture Rectangle 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[]{
+                    R.raw.multi_texture_30_vs,
+                    R.raw.multi_texture_30_fs,
+            };
+
+            info.mShaderTitle = new String[]{
+                    "Texture Rectangle 30 VS",
+                    "Texture Rectangle 30 FS",
             };
         }
 
