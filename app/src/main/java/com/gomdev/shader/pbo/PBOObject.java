@@ -1,6 +1,9 @@
 package com.gomdev.shader.pbo;
 
 import com.gomdev.gles.GLESObject;
+import com.gomdev.shader.pbo.PBORenderer.BlockInfo;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by gomdev on 15. 4. 5..
@@ -9,6 +12,13 @@ public class PBOObject extends GLESObject {
     private static final String CLASS = "PBOObject";
     private static final String TAG = PBOConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = PBOConfig.DEBUG;
+
+    enum TextureState {
+        NONE,
+        DECODING,
+        QUEUED,
+        MAPPING
+    }
 
     private int mX = 0;
     private int mY = 0;

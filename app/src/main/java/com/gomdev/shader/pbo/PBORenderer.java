@@ -4,8 +4,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.os.Build;
@@ -42,6 +43,16 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+
 public class PBORenderer extends SampleRenderer implements GLESRendererListener {
     private static final String CLASS = "PBORenderer";
     private static final String TAG = PBOConfig.TAG + "_" + CLASS;
@@ -50,6 +61,8 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
     private static final long SCALE_ANIMATION_DURATION = 500L;
     private static final int GRID_SIZE = 256;
     private static final float LINE_WIDTH_IN_DP = 5f;   // dp
+
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
     private GLESSceneManager mSM = null;
 
@@ -67,7 +80,7 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
     private int mWidth = 0;
     private int mHeight = 0;
 
-    private Bitmap mBitmap = null;
+    private BitmapRegionDecoder mDecoder = null;
 
     private float mBitmapRatio = 0f;
     private int mBitmapWidth = 0;
@@ -103,30 +116,46 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
     private float mDownScale = 1f;
     private float mCurrentScale = 1f;
 
-    private float mScreenX = 0f;
-    private float mScreenY = 0f;
-
     private float mSmallScreenX = 0f;
     private float mSmallScreenY = 0f;
 
     private float mCurrentScreenX = 0f;
     private float mCurrentScreenY = 0f;
 
+    private ThreadPoolExecutor mExecutor = null;
+    private CompletionService<BlockInfo> mCompletionService = null;
+
+    class BlockInfo {
+        final int mIndex;
+        final Bitmap mBitmap;
+
+        BlockInfo(int index, Bitmap bitmap) {
+            mIndex = index;
+            mBitmap = bitmap;
+        }
+    }
+
     public PBORenderer(Context context) {
         super(context);
 
         if (DEBUG) {
-            Log.d(TAG, "PBORenderer()");
+            Log.d(TAG, "PBORenderer() cpu count=" + CPU_COUNT);
         }
 
         mVersion = GLESContext.getInstance().getVersion();
 
-        mBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.large_image_2340x4160);
+        InputStream is = mContext.getResources().openRawResource(R.raw.large_image_2340x4160);
 
-        mBitmapWidth = mBitmap.getWidth();
-        mBitmapHeight = mBitmap.getHeight();
-        mNumOfObjectInWidth = (int) Math.ceil((float) mBitmap.getWidth() / GRID_SIZE);
-        mNumOfObjectInHeight = (int) Math.ceil((float) mBitmap.getHeight() / GRID_SIZE);
+        try {
+            mDecoder = BitmapRegionDecoder.newInstance(is, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mBitmapWidth = mDecoder.getWidth();
+        mBitmapHeight = mDecoder.getHeight();
+        mNumOfObjectInWidth = (int) Math.ceil((float) mBitmapWidth / GRID_SIZE);
+        mNumOfObjectInHeight = (int) Math.ceil((float) mBitmapHeight / GRID_SIZE);
         mNumOfObjects = mNumOfObjectInWidth * mNumOfObjectInHeight;
 
         mLineWidth = GLESUtils.getPixelFromDpi(mContext, LINE_WIDTH_IN_DP);
@@ -138,6 +167,8 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
         mAnimator = new GLESAnimator(mAnimatorCB);
         mAnimator.setValues(0f, 1f);
         mAnimator.setDuration(0L, SCALE_ANIMATION_DURATION);
+
+        mExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(CPU_COUNT);
     }
 
     private void createScene() {
@@ -238,6 +269,10 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
     }
 
     private void updateTexture() {
+        int numOfUpdatedTexture = 0;
+
+        mCompletionService = new ExecutorCompletionService<>(mExecutor);
+
         for (int i = 0; i < mNumOfObjects; i++) {
             PBOObject object = mObjects[i];
 
@@ -254,17 +289,17 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
             if (isInScreen == true && object.isTextureMapped() == false) {
                 int imageX = object.getImageX();
                 int imageY = object.getmImageY();
+                numOfUpdatedTexture++;
 
-                Bitmap bitmap = Bitmap.createBitmap(mBitmap, imageX, imageY, width, height);
-                GLESTexture.Builder builder = new GLESTexture.Builder(
-                        GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight())
-                        .setWrapMode(GLES20.GL_CLAMP_TO_EDGE)
-                        .setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
-                GLESTexture texture = builder.load(bitmap);
-                bitmap.recycle();
+                final Rect rect = new Rect(imageX, imageY, imageX + width, imageY + height);
+                final int index = i;
 
-                object.setTexture(texture);
-                object.setTextureMapped(true);
+                mCompletionService.submit(new Callable<BlockInfo>() {
+                    @Override
+                    public BlockInfo call() throws Exception {
+                        return decodeRegion(index, rect);
+                    }
+                });
             } else if (isInScreen == false && object.isTextureMapped() == true) {
                 GLESTexture texture = object.getTexture();
                 if (texture != null) {
@@ -275,6 +310,122 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
                 object.setTextureMapped(false);
             }
         }
+
+        for (int i = 0; i < numOfUpdatedTexture; i++) {
+            Future<BlockInfo> f = null;
+            try {
+                f = mCompletionService.take();
+                BlockInfo blockInfo = f.get();
+
+                Bitmap bitmap = blockInfo.mBitmap;
+                int index = blockInfo.mIndex;
+
+                GLESTexture.Builder builder = new GLESTexture.Builder(
+                        GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight())
+                        .setWrapMode(GLES20.GL_CLAMP_TO_EDGE)
+                        .setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+                GLESTexture texture = builder.load(bitmap);
+                bitmap.recycle();
+                bitmap = null;
+
+                mObjects[index].setTexture(texture);
+                mObjects[index].setTextureMapped(true);
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (ExecutionException e) {
+//                throw launderThrowable(e.getCause());
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private void updatePBO() {
+        int numOfUpdatedTexture = 0;
+
+        mCompletionService = new ExecutorCompletionService<>(mExecutor);
+
+        for (int i = 0; i < mNumOfObjects; i++) {
+            PBOObject object = mObjects[i];
+
+            int width = object.getWidth();
+            int height = object.getHeight();
+
+            float left = object.getX() + mTranslateX;
+            float right = left + width;
+            float top = object.getY() + mTranslateY;
+            float bottom = top - height;
+
+            boolean isInScreen = isInScreen(left, right, bottom, top);
+
+            if (isInScreen == true && object.isTextureMapped() == false) {
+                numOfUpdatedTexture++;
+
+                int imageX = object.getImageX();
+                int imageY = object.getmImageY();
+
+                final Rect rect = new Rect(imageX, imageY, imageX + width, imageY + height);
+                final int index = i;
+
+                mCompletionService.submit(new Callable<BlockInfo>() {
+                    @Override
+                    public BlockInfo call() throws Exception {
+                        return decodeRegion(index, rect);
+                    }
+                });
+            } else if (isInScreen == false && object.isTextureMapped() == true) {
+                PBOUtils.destroyTexture(object);
+                object.setTextureMapped(false);
+            }
+        }
+
+        for (int i = 0; i < numOfUpdatedTexture; i++) {
+            Future<BlockInfo> f = null;
+            try {
+                f = mCompletionService.take();
+                BlockInfo blockInfo = f.get();
+
+                Bitmap bitmap = blockInfo.mBitmap;
+                int index = blockInfo.mIndex;
+
+                int width = bitmap.getWidth();
+                int height = bitmap.getHeight();
+
+                PBOObject object = mObjects[index];
+
+                PBOUtils.createTexture(object);
+
+                GLES30.glBindBuffer(GLES30.GL_PIXEL_UNPACK_BUFFER, mPBOIDs[index]);
+
+                int byteSize = width * height * 4;
+                mTextureShader.mapBufferRange(byteSize);
+                mTextureShader.uploadBuffer(bitmap, width, 0, 0, width, height);
+                mTextureShader.unmapBuffer();
+                bitmap.recycle();
+
+                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, object.getTextureID());
+                mTextureShader.texSubImage2D(GLES30.GL_TEXTURE_2D, 0, 0, 0, width, height, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, 0);
+
+                object.setTextureMapped(true);
+
+                GLES30.glBindBuffer(GLES30.GL_PIXEL_UNPACK_BUFFER, 0);
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (ExecutionException e) {
+//                throw launderThrowable(e.getCause());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private BlockInfo decodeRegion(int index, Rect rect) {
+        Bitmap bitmap = mDecoder.decodeRegion(rect, null);
+        BlockInfo blockInfo = new BlockInfo(index, bitmap);
+
+        return blockInfo;
     }
 
     @Override
@@ -303,6 +454,7 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
 
         int imageX = 0;
         int imageY = 0;
+        Rect rect = new Rect();
         for (int i = 0; i < mNumOfObjectInHeight; i++) {
             objY = halfHeight - GRID_SIZE * i;
 
@@ -339,13 +491,15 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
 
                 if (mVersion == Version.GLES_20) {
                     if (isInScreen(mObjects[index]) == true) {
-                        Bitmap bitmap = Bitmap.createBitmap(mBitmap, imageX, imageY, objWidth, objHeight);
+                        rect.set(imageX, imageY, imageX + objWidth, imageY + objHeight);
+                        Bitmap bitmap = mDecoder.decodeRegion(rect, null);
                         GLESTexture.Builder builder = new GLESTexture.Builder(
                                 GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight())
                                 .setWrapMode(GLES20.GL_CLAMP_TO_EDGE)
                                 .setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
                         GLESTexture texture = builder.load(bitmap);
                         bitmap.recycle();
+                        bitmap = null;
 
                         mObjects[index].setTexture(texture);
                         mObjects[index].setTextureMapped(true);
@@ -439,48 +593,6 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void updatePBO() {
-        for (int i = 0; i < mNumOfObjects; i++) {
-            PBOObject object = mObjects[i];
-
-            int width = object.getWidth();
-            int height = object.getHeight();
-
-            float left = object.getX() + mTranslateX;
-            float right = left + width;
-            float top = object.getY() + mTranslateY;
-            float bottom = top - height;
-
-            boolean isInScreen = isInScreen(left, right, bottom, top);
-
-            if (isInScreen == true && object.isTextureMapped() == false) {
-
-                PBOUtils.createTexture(object);
-
-                GLES30.glBindBuffer(GLES30.GL_PIXEL_UNPACK_BUFFER, mPBOIDs[i]);
-
-                int byteSize = width * height * 4;
-                int imageX = object.getImageX();
-                int imageY = object.getmImageY();
-
-                mTextureShader.mapBufferRange(byteSize);
-                mTextureShader.uploadBuffer(mBitmap, mBitmap.getWidth(), imageX, imageY, width, height);
-                mTextureShader.unmapBuffer();
-
-                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, object.getTextureID());
-                mTextureShader.texSubImage2D(GLES30.GL_TEXTURE_2D, 0, 0, 0, width, height, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, 0);
-
-                object.setTextureMapped(true);
-
-                GLES30.glBindBuffer(GLES30.GL_PIXEL_UNPACK_BUFFER, 0);
-
-            } else if (isInScreen == false && object.isTextureMapped() == true) {
-                PBOUtils.destroyTexture(object);
-                object.setTextureMapped(false);
-            }
-        }
-    }
 
     @Override
     protected void onSurfaceCreated() {
