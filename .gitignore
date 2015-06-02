@@ -9,3 +9,5 @@ import-summary.txt
 app/src/main/java/com/gomdev/gles/
 *.apk
 *.txt
+
+app/app.iml
