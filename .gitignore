@@ -11,3 +11,4 @@ app/src/main/java/com/gomdev/gles/
 *.txt
 
 app/app.iml
+opengl-es-shader.iml
