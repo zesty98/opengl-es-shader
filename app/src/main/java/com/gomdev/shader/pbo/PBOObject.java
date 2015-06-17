@@ -1,9 +1,6 @@
 package com.gomdev.shader.pbo;
 
 import com.gomdev.gles.GLESObject;
-import com.gomdev.shader.pbo.PBORenderer.BlockInfo;
-
-import java.lang.ref.WeakReference;
 
 /**
  * Created by gomdev on 15. 4. 5..

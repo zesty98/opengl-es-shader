@@ -15,6 +15,7 @@ import com.gomdev.gles.GLESGLState;
 import com.gomdev.gles.GLESMeshUtils;
 import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -33,6 +34,7 @@ public class WhiteholeRenderer extends SampleRenderer {
     private static final String TAG = WhiteholeConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private WhiteholeObject mWhiteholeObject = null;
@@ -62,6 +64,7 @@ public class WhiteholeRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

@@ -14,6 +14,7 @@ import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESObjectListener;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESRendererListener;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
@@ -35,6 +36,7 @@ public class MultiTextureRenderer extends SampleRenderer implements GLESRenderer
     private static final int SPACING = 1;           // dp
     private static final int DEFAULT_WIDTH = 100;   // dp
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
     private GLESNode mRoot = null;
 
@@ -66,6 +68,7 @@ public class MultiTextureRenderer extends SampleRenderer implements GLESRenderer
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         mRoot = mSM.createRootNode("Root");
 

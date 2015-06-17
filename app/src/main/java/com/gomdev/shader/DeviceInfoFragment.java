@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESUtils;
 
 @SuppressLint("InflateParams")
 public class DeviceInfoFragment extends MainFragment {

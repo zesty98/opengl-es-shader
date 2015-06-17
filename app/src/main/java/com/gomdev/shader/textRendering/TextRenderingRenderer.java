@@ -18,6 +18,7 @@ import com.gomdev.gles.GLESMeshUtils;
 import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESRendererListener;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
@@ -46,6 +47,7 @@ public class TextRenderingRenderer extends SampleRenderer implements GLESRendere
     private final int TEXT_COLOR = 0xFF222222;
     private final int TEXT_MARGIN = 3;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESObject mObject = null;
@@ -75,6 +77,7 @@ public class TextRenderingRenderer extends SampleRenderer implements GLESRendere
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         createScene();
 
         mMargin = GLESUtils.getPixelFromDpi(mContext, TEXT_MARGIN);

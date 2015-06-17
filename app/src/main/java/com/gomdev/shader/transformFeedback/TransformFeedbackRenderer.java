@@ -19,6 +19,7 @@ import com.gomdev.gles.GLESGLState;
 import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESRendererListener;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
@@ -57,6 +58,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
 
     private GLESConfig.Version mVersion;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESObject mObject;
@@ -107,6 +109,7 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
@@ -186,36 +189,36 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
         if (mVersion == GLESConfig.Version.GLES_20) {
 
 //            synchronized (this) {
-                int size = mParticles.size();
-                for (int i = 0; i < size; i++) {
-                    Particle particle = mParticles.get(i);
-                    GLESVector3 dir = particle.getDirection();
+            int size = mParticles.size();
+            for (int i = 0; i < size; i++) {
+                Particle particle = mParticles.get(i);
+                GLESVector3 dir = particle.getDirection();
 
-                    float elapsedTime = normalizedElapsedTime;
+                float elapsedTime = normalizedElapsedTime;
 
-                    x = mPosBuffer.get(i * NUM_ELEMENT_OF_POSITION + 0);
-                    y = mPosBuffer.get(i * NUM_ELEMENT_OF_POSITION + 1);
+                x = mPosBuffer.get(i * NUM_ELEMENT_OF_POSITION + 0);
+                y = mPosBuffer.get(i * NUM_ELEMENT_OF_POSITION + 1);
 
-                    if (mNormalizedTime > particle.getNormalizedDuration()) {
-                        elapsedTime = 0f;
-                    }
-
-                    x = x + dir.getX() * elapsedTime * particle.getVelocityX();
-
-                    if (mNormalizedTime == 0f) {
-                        mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
-                    } else {
-                        mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, x);
-                    }
-
-                    y = y + dir.getY() * elapsedTime * particle.getVelocityX();
-
-                    if (mNormalizedTime == 0f) {
-                        mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
-                    } else {
-                        mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
-                    }
+                if (mNormalizedTime > particle.getNormalizedDuration()) {
+                    elapsedTime = 0f;
                 }
+
+                x = x + dir.getX() * elapsedTime * particle.getVelocityX();
+
+                if (mNormalizedTime == 0f) {
+                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
+                } else {
+                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, x);
+                }
+
+                y = y + dir.getY() * elapsedTime * particle.getVelocityX();
+
+                if (mNormalizedTime == 0f) {
+                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
+                } else {
+                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
+                }
+            }
 //            }
             mPosBuffer.position(0);
 
@@ -487,34 +490,34 @@ public class TransformFeedbackRenderer extends SampleRenderer implements GLESRen
         mIsDownAnimation = true;
 
 //        synchronized (this) {
-            GLESVector3 dir = new GLESVector3();
-            int size = mParticles.size();
-            for (int i = 0; i < size; i++) {
-                Particle particle = mParticles.get(i);
+        GLESVector3 dir = new GLESVector3();
+        int size = mParticles.size();
+        for (int i = 0; i < size; i++) {
+            Particle particle = mParticles.get(i);
 
-                dir.set(mDownX - particle.mX, mDownY - particle.mY, 0f);
-                float length = dir.length();
-                dir.normalize();
-                particle.setDirection(dir.getX(), dir.getY(), dir.getZ());
-                particle.setDistance(length);
+            dir.set(mDownX - particle.mX, mDownY - particle.mY, 0f);
+            float length = dir.length();
+            dir.normalize();
+            particle.setDirection(dir.getX(), dir.getY(), dir.getZ());
+            particle.setDistance(length);
 
-                float velocity = length * particle.getVelocityFactor();
-                particle.setVelocityX(velocity);
+            float velocity = length * particle.getVelocityFactor();
+            particle.setVelocityX(velocity);
 
-                if (mVersion == GLESConfig.Version.GLES_20) {
-                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
-                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
-                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 2, 0f);
-                    mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 3, 1f);
-                } else {
-                    float particleNormalizedDuration = particle.getNormalizedDuration();
+            if (mVersion == GLESConfig.Version.GLES_20) {
+                mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
+                mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
+                mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 2, 0f);
+                mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 3, 1f);
+            } else {
+                float particleNormalizedDuration = particle.getNormalizedDuration();
 
-                    mUserDataBuffer.put(i * 4 + 0, velocity);
-                    mUserDataBuffer.put(i * 4 + 1, particleNormalizedDuration);
-                    mUserDataBuffer.put(i * 4 + 2, dir.getX());
-                    mUserDataBuffer.put(i * 4 + 3, dir.getY());
-                }
+                mUserDataBuffer.put(i * 4 + 0, velocity);
+                mUserDataBuffer.put(i * 4 + 1, particleNormalizedDuration);
+                mUserDataBuffer.put(i * 4 + 2, dir.getX());
+                mUserDataBuffer.put(i * 4 + 3, dir.getY());
             }
+        }
 //        }
 
         mPrevTick = System.currentTimeMillis();

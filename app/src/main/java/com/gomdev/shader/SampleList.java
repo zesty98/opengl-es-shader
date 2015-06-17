@@ -786,7 +786,7 @@ public class SampleList {
     // }
 
     private void setupMultiLighting() {
-       SampleInfo info = new SampleInfo();
+        SampleInfo info = new SampleInfo();
         info.mSampleName = MultiLightingConfig.EFFECT_NAME;
         info.mIntent = new Intent(mContext,
                 com.gomdev.shader.multiLighting.MultiLightingActivity.class);

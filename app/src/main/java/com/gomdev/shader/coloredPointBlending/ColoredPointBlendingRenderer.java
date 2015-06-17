@@ -21,6 +21,7 @@ import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESParticle;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESRendererListener;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
@@ -52,6 +53,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
     private static final int NUM_ELEMENT_OF_COLOR = 4;
     private static final int NUM_ELEMENT_OF_POINTSIZE = 1;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
     private GLESObject mParticleObject;
     private GLESShader mParticleShader;
@@ -82,6 +84,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

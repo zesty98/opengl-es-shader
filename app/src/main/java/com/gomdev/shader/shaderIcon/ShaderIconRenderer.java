@@ -17,6 +17,7 @@ import com.gomdev.gles.GLESNodeListener;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESObjectListener;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -32,6 +33,7 @@ public class ShaderIconRenderer extends SampleRenderer {
     private static final String TAG = ShaderIconConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ShaderIconConfig.DEBUG;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESNode mBGNode = null;
@@ -67,6 +69,7 @@ public class ShaderIconRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

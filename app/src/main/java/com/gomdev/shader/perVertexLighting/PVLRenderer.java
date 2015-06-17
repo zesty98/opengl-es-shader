@@ -16,6 +16,7 @@ import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESObjectListener;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -31,6 +32,7 @@ public class PVLRenderer extends SampleRenderer {
     private static final String TAG = PVLConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = PVLConfig.DEBUG;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESObject mCubeObject = null;
@@ -62,6 +64,7 @@ public class PVLRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

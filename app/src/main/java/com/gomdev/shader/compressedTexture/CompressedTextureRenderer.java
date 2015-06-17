@@ -26,6 +26,7 @@ import com.gomdev.gles.GLESMeshUtils;
 import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -107,6 +108,7 @@ public class CompressedTextureRenderer extends SampleRenderer {
         }
     }
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESNode mRoot = null;
@@ -137,6 +139,8 @@ public class CompressedTextureRenderer extends SampleRenderer {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
+
+        mRenderer = GLESRenderer.createRenderer();
 
         setupInfoView();
 

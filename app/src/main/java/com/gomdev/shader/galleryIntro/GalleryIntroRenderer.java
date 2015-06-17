@@ -17,6 +17,7 @@ import com.gomdev.gles.GLESGLState;
 import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -76,6 +77,7 @@ public class GalleryIntroRenderer extends SampleRenderer {
         float mPointSize = 0f;
     }
 
+    private GLESRenderer mRenderer = null;
     private final GLESSceneManager mSM;
     private final GLESNode mRoot;
     private final GLESObject mIntroObject;
@@ -105,6 +107,7 @@ public class GalleryIntroRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         mRoot = mSM.createRootNode("root");
 

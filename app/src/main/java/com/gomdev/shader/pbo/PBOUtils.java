@@ -51,9 +51,9 @@ public class PBOUtils {
     }
 
     static GLESVertexInfo createLineVertexInfo(GLESShader shader,
-            float x, float y, float width, float height,
-            int numOfObjectInWidth, int numOfObjectInHeight,
-            int gridSize) {
+                                               float x, float y, float width, float height,
+                                               int numOfObjectInWidth, int numOfObjectInHeight,
+                                               int gridSize) {
         float left = x;
         float right = x + width;
         float top = y;
@@ -95,7 +95,7 @@ public class PBOUtils {
     }
 
     static GLESVertexInfo createScreenVertexInfo(GLESShader shader,
-            float x, float y, float width, float height) {
+                                                 float x, float y, float width, float height) {
         float left = x;
         float right = x + width;
         float top = y;

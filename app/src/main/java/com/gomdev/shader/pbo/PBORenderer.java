@@ -30,6 +30,7 @@ import com.gomdev.gles.GLESNodeListener;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESObjectListener;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESRendererListener;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
@@ -64,6 +65,7 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESNode mScreenNode = null;
@@ -159,6 +161,8 @@ public class PBORenderer extends SampleRenderer implements GLESRendererListener 
         mNumOfObjects = mNumOfObjectInWidth * mNumOfObjectInHeight;
 
         mLineWidth = GLESUtils.getPixelFromDpi(mContext, LINE_WIDTH_IN_DP);
+
+        mRenderer = GLESRenderer.createRenderer();
 
         createScene();
         setupInfoView();

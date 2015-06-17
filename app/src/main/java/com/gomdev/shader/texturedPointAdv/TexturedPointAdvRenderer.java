@@ -18,6 +18,7 @@ import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESParticle;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESRendererListener;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
@@ -52,6 +53,7 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
 
     private static final float ROUND_FACTOR = 0.5f;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
     private GLESObject mObject;
     private GLESShader mShader;
@@ -95,6 +97,7 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

@@ -13,6 +13,7 @@ import com.gomdev.gles.GLESMeshUtils;
 import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -28,6 +29,7 @@ public class TexturedCubeRenderer extends SampleRenderer {
     private static final String TAG = TexturedCubeConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = TexturedCubeConfig.DEBUG;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
 
     private GLESObject mTextureObject = null;
@@ -50,6 +52,7 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

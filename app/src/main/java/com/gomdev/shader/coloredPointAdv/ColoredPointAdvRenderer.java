@@ -17,6 +17,7 @@ import com.gomdev.gles.GLESNode;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESParticle;
 import com.gomdev.gles.GLESRect;
+import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSceneManager;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -45,6 +46,7 @@ public class ColoredPointAdvRenderer extends SampleRenderer {
     private static final int DURATION_ANIMATION = 1500;
     private static final float INVERSE_DURATION_ANIMATION = 1f / DURATION_ANIMATION;
 
+    private GLESRenderer mRenderer = null;
     private GLESSceneManager mSM = null;
     private GLESObject mObject;
     private GLESShader mShader;
@@ -83,6 +85,7 @@ public class ColoredPointAdvRenderer extends SampleRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mRenderer = GLESRenderer.createRenderer();
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
