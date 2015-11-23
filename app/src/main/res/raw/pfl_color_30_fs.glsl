@@ -31,17 +31,6 @@ struct MeterialInfo {
 
 const vec4 sceneAmbient = vec4(1.0, 1.0, 1.0, 1.0);
 
-const LightInfo lightInfo = LightInfo(
-        vec4(1.0, 1.0, 1.0, 1.0),
-        vec4(1.0, 1.0, 1.0, 1.0),
-        vec4(1.0, 1.0, 1.0, 1.0));
-
-const MeterialInfo materialInfo = MeterialInfo(
-        vec4(0.3, 0.3, 0.3, 1.0),
-        vec4(0.5, 0.5, 0.5, 1.0),
-        vec4(1.0, 1.0, 1.0, 1.0),
-        16.0);
-
 //vec4 calcLightColor() {
 //
 //    vec4 lightColor = sceneAmbient * materialInfo.ambient;
@@ -75,7 +64,7 @@ const MeterialInfo materialInfo = MeterialInfo(
 //    return lightColor;
 //}
 
-vec4 calcLightColor(vec4 lightPosES) {
+vec4 calcLightColor(vec4 lightPosES, LightInfo lightInfo, MeterialInfo materialInfo) {
     vec3 lightDirES;
     if (lightPosES.w == 0.0) {
         // directional light
@@ -102,14 +91,25 @@ vec4 calcLightColor(vec4 lightPosES) {
 }
 
 void main() {
+    LightInfo lightInfo = LightInfo(
+            vec4(1.0, 1.0, 1.0, 1.0),
+            vec4(1.0, 1.0, 1.0, 1.0),
+            vec4(1.0, 1.0, 1.0, 1.0));
+
+    MeterialInfo materialInfo = MeterialInfo(
+            vec4(0.3, 0.3, 0.3, 1.0),
+            vec4(0.5, 0.5, 0.5, 1.0),
+            vec4(1.0, 1.0, 1.0, 1.0),
+            16.0);
+
     vec4 lightColor = sceneAmbient * materialInfo.ambient;
 
     if (uLightState[0] == 1) {
-        lightColor += calcLightColor(vLight1PosES);
+        lightColor += calcLightColor(vLight1PosES, lightInfo, materialInfo);
     }
 
     if (uLightState[1] == 1) {
-        lightColor += calcLightColor(vLight2PosES);
+        lightColor += calcLightColor(vLight2PosES,lightInfo, materialInfo);
     }
 
     fragColor = vColor * lightColor;

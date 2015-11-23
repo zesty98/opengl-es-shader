@@ -26,18 +26,7 @@ struct MeterialInfo {
     highp float specularExponent;
 };
 
-const LightInfo lightInfo = LightInfo(
-        vec4(1.0, 1.0, 1.0, 1.0),
-        vec4(1.0, 1.0, 1.0, 1.0),
-        vec4(1.0, 1.0, 1.0, 1.0));
-
-const MeterialInfo materialInfo = MeterialInfo(
-        vec4(0.3, 0.3, 0.3, 1.0),
-        vec4(0.5, 0.5, 0.5, 1.0),
-        vec4(1.0, 1.0, 1.0, 1.0),
-        16.0);
-
-vec4 calcLightColor(vec4 posES) {
+vec4 calcLightColor(vec4 posES, LightInfo lightInfo, MeterialInfo materialInfo) {
     // light position in eye space
     vec4 lightPosES = uVMatrix * uLightPos;
 
@@ -71,7 +60,18 @@ void main() {
     vec4 posES = uVMatrix * uMMatrix * aPosition;
     vec4 pos = uPMatrix * posES;
 
-    vec4 lightColor = calcLightColor(posES);
+    LightInfo lightInfo = LightInfo(
+            vec4(1.0, 1.0, 1.0, 1.0),
+            vec4(1.0, 1.0, 1.0, 1.0),
+            vec4(1.0, 1.0, 1.0, 1.0));
+
+    MeterialInfo materialInfo = MeterialInfo(
+            vec4(0.3, 0.3, 0.3, 1.0),
+            vec4(0.5, 0.5, 0.5, 1.0),
+            vec4(1.0, 1.0, 1.0, 1.0),
+            16.0);
+
+    vec4 lightColor = calcLightColor(posES, lightInfo, materialInfo);
 
     vColor = aColor * lightColor;
 

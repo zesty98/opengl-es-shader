@@ -9,6 +9,7 @@ out vec4 vColor;
 out vec3 vNormal;
 out vec4 vPositionES;
 out vec4 vLight1PosES;
+out vec4 vLight2PosES;
 
 uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
